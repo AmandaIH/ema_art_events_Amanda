@@ -1,10 +1,9 @@
-// components/global/EventItemText.jsx (eller hvor den nu ligger)
 "use client";
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useState, useCallback } from "react";
-import CustomButton from "./CustomButton"; // Antager CustomButton er i samme mappe eller relativ sti
+import CustomButton from "./CustomButton";
 
 import { backInOut, motion, useAnimationControls } from "framer-motion";
 
@@ -15,7 +14,7 @@ import {
   CardFooter,
   CardHeader,
   CardTitle,
-} from "@/components/ui/card"; // Vigtigt at stien er korrekt
+} from "@/components/ui/card";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -103,30 +102,24 @@ const EventItemText = ({
 
   return (
     <Card className={`md:col-2 max-w-[30ch]`} style={{ minWidth: "250px" }}>
-      {/* Justeret padding her */}
       <CardHeader className="p-4 pb-2 relative">
-        {" "}
-        {/* Fra pr-(--space-1rem) pl-(--space-1rem) pb-(--space-1rem) */}
-        <CardTitle className="mb-1">{title}</CardTitle>{" "}
-        {/* Fra mb-(--space-0_5rem) */}
+        <CardTitle className="mb-1">{title}</CardTitle>
+
         <CardDescription className="mb-1">{date}</CardDescription>
         <CardDescription>{rest.time || "17.00"}</CardDescription>
       </CardHeader>
       <CardContent className="p-4 pt-0">
-        {" "}
-        {/* Standardiseret padding */}
         <p>{location?.name}</p>
-        <p className="mb-4">{location?.address}</p>{" "}
-        {/* Fra mb-(--space-1rem) */}
-        <p className="mb-2">{description}</p> {/* Fra mb-(--space-0_5rem) */}
+        <p className="mb-4">{location?.address}</p>
+
+        <p className="mb-2">{description}</p>
       </CardContent>
 
       <CardFooter
         className={`flex items-center justify-between p-4 ${
-          // Justeret padding her
           isDashboardPage
-            ? "flex-col items-start gap-2" // Brug flex-col for at stable knapper vertikalt i dashboard
-            : "flex-row items-center justify-between" // Standard flex-row for events side
+            ? "flex-col items-start gap-2"
+            : "flex-row items-center justify-between"
         }`}
       >
         {isEventsPage ? (
