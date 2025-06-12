@@ -79,7 +79,7 @@ export async function getArtworkByEventID(objectNumber) {
 }
 
 //Alle artworkId'er Data pr. Event, istedet for at det stod på dashboard page.jsx
-export async function getAllArtworksDataPrevent() {
+export async function getNeededArtworkDataPrEvent() {
   const dataevent = await getEvent();
   return await Promise.all(
     dataevent.map(async (event) => {
