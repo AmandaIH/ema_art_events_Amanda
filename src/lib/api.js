@@ -32,7 +32,7 @@ export async function getEventLocations() {
   return eventslocations;
 }
 
-// SMK ENDPOINTS
+// SMK ENDPOINTS / Mixet
 
 export async function getSMK() {
   const datasSMK = await fetch(
@@ -60,20 +60,8 @@ export async function getSMKImg(filters = []) {
     headers: {
       "Content-Type": "application/json",
     },
-    cache: "no-store", // Ingen cache for dynamiske/filtrerede resultater
+    cache: "no-store",
   });
-
-  if (!datasSMK.ok) {
-    const errorText = await datasSMK.text();
-    console.error(
-      "Fejl ved hentning af SMK-billeder (getSMKImg):",
-      datasSMK.status,
-      errorText
-    );
-    throw new Error(
-      `Failed to fetch SMK images: ${datasSMK.status} ${datasSMK.statusText}`
-    );
-  }
 
   const dataSMK = await datasSMK.json();
   const SMKimages = dataSMK.items;
@@ -88,6 +76,40 @@ export async function getArtworkByEventID(objectNumber) {
   const data = await res.json();
   const artImg = data.items?.[0];
   return artImg;
+}
+
+//Alle artworkId'er Data pr. Event, istedet for at det stod på dashboard page.jsx
+export async function getAllArtworksDataPrevent() {
+  const dataevent = await getEvent();
+  return await Promise.all(
+    dataevent.map(async (event) => {
+      let artImgsData = [];
+      if (event.artworkIds) {
+        artImgsData = await Promise.all(
+          event.artworkIds.map(async (artworkId) => {
+            const imgData = await getArtworkByEventID(artworkId);
+            return imgData;
+          })
+        );
+        artImgsData = artImgsData
+          .filter((img) => img !== null)
+          .map((imageData) => ({
+            id: imageData.object_number,
+            titel: imageData.titles?.titel,
+            image_thumbnail: imageData.image_thumbnail,
+            has_image: imageData.has_image,
+            suggested_bg_color: imageData.suggested_bg_color,
+            techniques: imageData.techniques,
+            // tilføj her hvis du ønsker mere data pr. artwork der er tilknyttet til hvert event.
+            // f.eks. imageData.(hvad end du skal bruge fra SMK Api'et)
+          }));
+      }
+      return {
+        ...event,
+        artImgs: artImgsData,
+      };
+    })
+  );
 }
 
 // Filter (getSMKFilter behøves ikke længere, da getSMKImg nu håndterer filtrering)

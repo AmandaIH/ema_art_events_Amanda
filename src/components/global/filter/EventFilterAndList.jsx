@@ -1,7 +1,6 @@
-// src/components/global/filter/EventFilterAndList.jsx
 "use client";
 
-import React, { useActionState, startTransition } from "react"; // <-- TILFØJET startTransition
+import React, { useActionState, startTransition } from "react";
 import { usePathname } from "next/navigation";
 
 import EventFilterDropdown from "./EventFilterDropdown";
@@ -21,7 +20,6 @@ export default function EventFilterAndList({
     totalFound: initialEvents.length,
   });
 
-  // RETTELSE HER: Pakk formAction ind i startTransition
   const handleFilterSelection = (value, name) => {
     let currentFilters = filterState.active.filter(
       (f) => !f.startsWith(`${name}:`)
@@ -32,10 +30,8 @@ export default function EventFilterAndList({
       newFilters.push(`${name}:${value}`);
     }
 
-    // VIGTIG RETTELSE: Brug startTransition her
     startTransition(() => {
-      // <-- Start en transition
-      formAction(newFilters); // <-- Kald Server Actionen inde i transitionen
+      formAction(newFilters);
     });
   };
 

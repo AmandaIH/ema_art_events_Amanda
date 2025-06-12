@@ -1,4 +1,3 @@
-// src/components/global/EventListWithFilter.jsx
 "use client";
 
 import CustomButton from "./CustomButton";
@@ -10,7 +9,7 @@ import Link from "next/link";
 const EventListWithFilter = ({ displayedEvents, availableLocations }) => {
   const pathname = usePathname();
   const isDashboardPage = pathname === "/dashboard";
-  console.log("EventListWithFilter: ", displayedEvents, availableLocations);
+
   return (
     <div className="@container">
       <section className="grid grid-cols-1 grid-rows-auto @min-[775px]:grid-cols-2 gap-(--space-4rem)">
