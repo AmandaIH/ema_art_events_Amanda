@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { useState, useCallback } from "react";
+import { useState } from "react";
 import CustomButton from "./CustomButton";
 
 import { backInOut, motion, useAnimationControls } from "framer-motion";
@@ -45,30 +45,6 @@ const EventItemText = ({
   const [open, setOpen] = useState(false);
   const router = useRouter();
 
-  const eventDataForCart = useCallback(
-    {
-      id,
-      title,
-      description,
-      date,
-      location,
-      pricePerTicket: pricePerTicket,
-      artImg,
-      time: time || rest.time,
-    },
-    [
-      id,
-      title,
-      description,
-      date,
-      location,
-      pricePerTicket,
-      artImg,
-      time,
-      rest.time,
-    ]
-  );
-
   const handleDelete = async () => {
     try {
       const response = await fetch(
@@ -81,7 +57,6 @@ const EventItemText = ({
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`);
       }
-
       alert("Event slettet succesfuldt!");
       setOpen(false);
       router.refresh();

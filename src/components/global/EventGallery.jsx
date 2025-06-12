@@ -6,7 +6,7 @@ import EventItem from "@/components/global/EventItem";
 import { usePathname } from "next/navigation";
 import Link from "next/link";
 
-const EventListWithFilter = ({ displayedEvents, availableLocations }) => {
+const EventGallery = ({ displayedEvents, availableLocations }) => {
   const pathname = usePathname();
   const isDashboardPage = pathname === "/dashboard";
 
@@ -45,4 +45,4 @@ const EventListWithFilter = ({ displayedEvents, availableLocations }) => {
   );
 };
 
-export default EventListWithFilter;
+export default EventGallery;

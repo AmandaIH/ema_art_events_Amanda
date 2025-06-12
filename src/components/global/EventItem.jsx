@@ -4,14 +4,10 @@ import Image from "next/image";
 import Placeholder from "@/app/assets/img/placeholder.png";
 import EventItemText from "./EventItemText";
 
-import { useRouter } from "next/navigation";
-
 const EventItem = (dataevent) => {
   const artImgs = dataevent.artImgs;
 
   const primaryArtImg = artImgs && artImgs.length > 0 ? artImgs[0] : null;
-
-  const router = useRouter();
 
   const imageUrl = primaryArtImg?.image_thumbnail || Placeholder.src;
 

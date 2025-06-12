@@ -5,7 +5,7 @@ import { usePathname } from "next/navigation";
 
 import EventFilterDropdown from "./EventFilterDropdown";
 import { filterEvents } from "./filterEvents";
-import EventListWithFilter from "../EventListWithFilter";
+import EventGallery from "../EventGallery";
 
 export default function EventFilterAndList({
   initialEvents,
@@ -69,7 +69,7 @@ export default function EventFilterAndList({
         </aside>
       )}
 
-      <EventListWithFilter
+      <EventGallery
         displayedEvents={filterState.data}
         availableLocations={availableLocations}
       />
