@@ -70,6 +70,7 @@ export default function EventFilterAndList({
       )}
 
       <EventGallery
+        initialEvents={initialEvents}
         displayedEvents={filterState.data}
         availableLocations={availableLocations}
       />

@@ -1,5 +1,5 @@
 import {
-  getArtworkByEventID,
+  getAllArtworksByEventID,
   getEvent,
   getEventDates,
   getEventLocations,
@@ -14,20 +14,17 @@ export default async function Dashboard() {
   const eventsLocations = await getEventLocations();
 
   //Til Content
+  const eventsData = await getEvent();
 
-  // const eventData = await getEvent();
-  // let artImgsPrEvent = [];
-  // let artWorkData = [];
-  // eventData.map(async (event) => {
-  //   console.log("dashboard: ", event);
-  //    artImgsPrEvent = await Promise.all(
-  //      event.artworksIds.map(async (object_number) => {
-  //        artWorkData = await getArtworkByEventID(object_number);
-  //      })
-  //    );
-  // });
+  const eventDataWithArtworks = await Promise.all(
+    eventsData.map(async (event) => {
+      const imageData = await getAllArtworksByEventID(event.artworkIds);
+      return [[event], [imageData]];
+    })
+  );
 
-  const eventDataWithArtworks = await getNeededArtworkDataPrEvent();
+  const noget = await getNeededArtworkDataPrEvent();
+  console.log("combinedArray", eventDataWithArtworks, "noget", noget);
   return (
     <main>
       <EventFilterAndList

@@ -77,6 +77,12 @@ export async function getArtworkByEventID(objectNumber) {
   const artImg = data.items?.[0];
   return artImg;
 }
+export async function getAllArtworksByEventID(objectNumber) {
+  const url = `https://api.smk.dk/api/v1/art?object_number=${objectNumber}`;
+  const res = await fetch(url);
+  const data = await res.json();
+  return data;
+}
 
 //Alle artworkId'er Data pr. Event, istedet for at det stod på dashboard page.jsx
 export async function getNeededArtworkDataPrEvent() {

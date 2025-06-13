@@ -6,9 +6,7 @@ import EventItemText from "./EventItemText";
 
 const EventItem = (dataevent) => {
   const artImgs = dataevent.artImgs;
-
   const primaryArtImg = artImgs && artImgs.length > 0 ? artImgs[0] : null;
-
   const imageUrl = primaryArtImg?.image_thumbnail || Placeholder.src;
 
   return (
