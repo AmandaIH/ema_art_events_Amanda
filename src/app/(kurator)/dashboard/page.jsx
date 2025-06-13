@@ -27,7 +27,7 @@ export default async function Dashboard() {
         address: event.location?.address,
         description: event.description,
         totalTickets: event.location?.maxGuests,
-        artImgs: artImages, // <-- an object with `.items`, likely
+        artImgs: artImages,
       };
     })
   );
