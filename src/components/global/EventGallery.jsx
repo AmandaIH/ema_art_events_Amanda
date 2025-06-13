@@ -10,7 +10,7 @@ const EventGallery = ({ data }) => {
   return (
     <div className="@container">
       <section className="grid grid-cols-1 grid-rows-auto @min-[775px]:grid-cols-2 gap-(--space-4rem)">
-        {!data ? (
+        {data.length == 0 ? (
           <p className="text-gray-500 text-center col-span-full">
             Ingen events matcher dine filtre.
           </p>

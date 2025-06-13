@@ -15,11 +15,10 @@ export default function EventFilterDropdown({
   name,
   label: { singular, plural },
   items,
-  onValueChange,
-  selectedValue,
+  active,
 }) {
   return (
-    <Select onValueChange={onValueChange} value={selectedValue || "all"}>
+    <Select name={name} defaultValue={active && active}>
       <SelectTrigger className="w-[180px]">
         <SelectValue placeholder={`Vælg ${singular.toLowerCase()}`} />
       </SelectTrigger>
