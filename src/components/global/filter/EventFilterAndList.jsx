@@ -41,7 +41,14 @@ export default function EventFilterAndList({
     filterState.active
       .find((f) => f.startsWith("locationId:"))
       ?.split(":")[1] || "all";
-
+  console.log(
+    "initialEvents",
+    initialEvents,
+    "filterState",
+    filterState,
+    "initialEvents.filterState.data",
+    initialEvents.filterState
+  );
   return (
     <>
       {(pathname === "/dashboard" || pathname === "/events") && (
@@ -69,9 +76,16 @@ export default function EventFilterAndList({
       )}
 
       <EventGallery
-        dataevent={initialEvents}
-        displayedEvents={filterState.data}
-        availableLocations={availableLocations}
+        id={initialEvents.id}
+        title={initialEvents.title}
+        description={initialEvents.description}
+        locationName={initialEvents.locationName}
+        address={initialEvents.address}
+        totalTickets={initialEvents.totalTickets}
+        bookedTickets={initialEvents.bookedTickets}
+        artImg={initialEvents.artImg}
+        displayedEvents={initialEvents.filterState.data}
+        availableLocations={initialEvents.availableLocations}
       />
     </>
   );

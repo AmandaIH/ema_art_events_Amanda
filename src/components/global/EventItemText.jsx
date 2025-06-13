@@ -29,15 +29,13 @@ import {
 import { useRouter } from "next/navigation";
 
 const EventItemText = ({
-  id,
   title,
   description,
-  date,
-  location,
-  pricePerTicket = 45,
+  locationName,
+  address,
+  totalTickets,
+  bookedTickets,
   artImg,
-  time,
-  ...rest
 }) => {
   const pathname = usePathname();
   const isEventsPage = pathname?.startsWith("/events");
@@ -84,8 +82,8 @@ const EventItemText = ({
         <CardDescription>{rest.time || "17.00"}</CardDescription>
       </CardHeader>
       <CardContent className="p-4 pt-0">
-        <p>{location?.name}</p>
-        <p className="mb-4">{location?.address}</p>
+        <p>{locationName}</p>
+        <p className="mb-4">{address}</p>
 
         <p className="mb-2">{description}</p>
       </CardContent>

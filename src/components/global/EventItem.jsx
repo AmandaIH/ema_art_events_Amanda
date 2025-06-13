@@ -4,11 +4,22 @@ import Image from "next/image";
 import Placeholder from "@/app/assets/img/placeholder.png";
 import EventItemText from "./EventItemText";
 
-const EventItem = (dataevent) => {
-  const artImgs = dataevent.artImgs.items;
-  const primaryArtImg = artImgs && artImgs.length > 0 ? artImgs[0] : null;
+const EventItem = ({
+  id,
+  title,
+  description,
+  locationName,
+  address,
+  totalTickets,
+  bookedTickets,
+  artImg,
+}) => {
+  console.log("EventItem", initialEvents);
+  const artImgs = initialEvents;
+  const primaryArtImg =
+    artImgs.items && artImgs.items.length > 0 ? artImgs.items[0] : null;
   const imageUrl = primaryArtImg?.image_thumbnail || Placeholder.src;
-
+  console.log("??: ", imageUrl);
   return (
     <article className="grid @max-[474px]:grid-cols-1 @max-[474px]:grid-rows-auto @min-[475px]:grid-cols-2 @min-[475px]:grid-rows-1">
       <figure className="max-w-[210px] h-[325px] md:col-1 grid grid-cols-1 grid-rows-3 ">
@@ -23,7 +34,7 @@ const EventItem = (dataevent) => {
         <div className=" max-w-[180px] h-[250px] col-1 row-start-2 row-span-2 self-end justify-self-end rounded-lg">
           <Image
             src={imageUrl}
-            alt={primaryArtImg?.title || dataevent.title || "Event billede"}
+            alt={primaryArtImg?.title || title || "Event billede"}
             width={500}
             height={500}
             className=" h-full object-cover rounded-lg"
@@ -33,10 +44,13 @@ const EventItem = (dataevent) => {
       </figure>
 
       <EventItemText
-        {...dataevent}
-        totalTickets={dataevent.location?.maxGuests}
-        bookedTickets={dataevent.bookedTickets}
-        artImg={primaryArtImg}
+        title={title}
+        description={description}
+        locationName={locationName}
+        address={address}
+        totalTickets={totalTickets}
+        bookedTickets={bookedTickets}
+        artImg={artImg}
       ></EventItemText>
     </article>
   );

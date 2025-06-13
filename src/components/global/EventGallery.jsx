@@ -6,7 +6,18 @@ import EventItem from "@/components/global/EventItem";
 import { usePathname } from "next/navigation";
 import Link from "next/link";
 
-const EventGallery = ({ displayedEvents, availableLocations }) => {
+const EventGallery = ({
+  id,
+  title,
+  description,
+  locationName,
+  address,
+  totalTickets,
+  bookedTickets,
+  artImg,
+  displayedEvents,
+  availableLocations,
+}) => {
   const pathname = usePathname();
   const isDashboardPage = pathname === "/dashboard";
 
@@ -20,10 +31,15 @@ const EventGallery = ({ displayedEvents, availableLocations }) => {
                 ?.name || "Ukendt lokation";
             return (
               <EventItem
-                key={dataevent.id}
-                {...dataevent}
-                showTicketCounter={true}
+                key={id}
+                title={title}
+                description={description}
                 locationName={locationName}
+                address={address}
+                totalTickets={totalTickets}
+                bookedTickets={bookedTickets}
+                artImg={artImg}
+                showTicketCounter={true}
               >
                 {isDashboardPage && (
                   <div className="mt-4 flex gap-2">

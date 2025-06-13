@@ -16,11 +16,21 @@ export default async function Dashboard() {
   const eventsData = await getEvent();
   const eventDataWithArtworks = await Promise.all(
     eventsData.map(async (event) => {
-      const artImgs = await getAllArtworksByEventID(event.artworkIds);
-      return { ...event, artImgs };
+      console.log("page: ", event);
+      const artImages = await getAllArtworksByEventID(event.artworkIds);
+      return {
+        id: event.id,
+        title: event.title,
+        date: event.date,
+        bookedTickets: event.bookedTickets,
+        location: event.location?.name,
+        address: event.location?.address,
+        description: event.description,
+        totalTickets: event.location?.maxGuests,
+        artImgs: artImages, // <-- an object with `.items`, likely
+      };
     })
   );
-
   return (
     <main>
       <EventFilterAndList
