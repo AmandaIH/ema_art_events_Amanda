@@ -11,69 +11,69 @@ export default function EventFilterAndList({
   initialEvents,
   availableDates,
   availableLocations,
+  data,
 }) {
-  console.log("EventFilterAndList", initialEvents);
-  const pathname = usePathname();
-  const [filterState, formAction, isFiltering] = useActionState(filterEvents, {
-    active: [],
-    data: initialEvents,
-    totalFound: initialEvents.length,
-  });
+  // console.log("initialEvents", initialEvents);
+  // const pathname = usePathname();
+  // const [filterState, formAction, isFiltering] = useActionState(filterEvents, {
+  //   active: [],
+  //   data: data,
+  //   totalFound: initialEvents.length,
+  // });
 
-  const handleFilterSelection = (value, name) => {
-    let currentFilters = filterState.active.filter(
-      (f) => !f.startsWith(`${name}:`)
-    );
-    let newFilters = [...currentFilters];
+  // const handleFilterSelection = (value, name) => {
+  //   let currentFilters = filterState.active.filter(
+  //     (f) => !f.startsWith(`${name}:`)
+  //   );
+  //   let newFilters = [...currentFilters];
 
-    if (value !== "all") {
-      newFilters.push(`${name}:${value}`);
-    }
+  //   if (value !== "all") {
+  //     newFilters.push(`${name}:${value}`);
+  //   }
 
-    startTransition(() => {
-      formAction(newFilters);
-    });
-  };
+  //   startTransition(() => {
+  //     formAction(newFilters);
+  //   });
+  // };
 
-  const selectedDateValue =
-    filterState.active.find((f) => f.startsWith("date:"))?.split(":")[1] ||
-    "all";
-  const selectedLocationValue =
-    filterState.active
-      .find((f) => f.startsWith("locationId:"))
-      ?.split(":")[1] || "all";
-  console.log(
-    "EventFilterandList",
-    "filterState",
-    filterState,
-    "initialEvents.filterState.data",
-    initialEvents.filterState
-  );
+  // const selectedDateValue =
+  //   filterState.active.find((f) => f.startsWith("date:"))?.split(":")[1] ||
+  //   "all";
+  // const selectedLocationValue =
+  //   filterState.active
+  //     .find((f) => f.startsWith("locationId:"))
+  //     ?.split(":")[1] || "all";
+  // console.log(
+  //   "EventFilterandList",
+  //   "filterState",
+  //   filterState,
+  //   "initialEvents.filterState.data",
+  //   initialEvents.filterState
+  // );
+
+  const signedIn = true;
+
   return (
     <>
-      {(pathname === "/dashboard" || pathname === "/events") && (
-        <aside className="flex flex-row items-center gap-4 px-2 py-1 mb-8">
-          <EventFilterDropdown
-            name="date"
-            label={{ singular: "Dato", plural: "Datoer" }}
-            items={availableDates}
-            onValueChange={(value) => handleFilterSelection(value, "date")}
-            selectedValue={selectedDateValue}
-          />
-          <EventFilterDropdown
-            name="locationId"
-            label={{ singular: "Lokation", plural: "Lokationer" }}
-            items={availableLocations}
-            onValueChange={(value) =>
-              handleFilterSelection(value, "locationId")
-            }
-            selectedValue={selectedLocationValue}
-          />
-          {isFiltering && (
-            <p className="ml-4 text-blue-600">Indlæser events...</p>
-          )}
-        </aside>
-      )}
+      <aside className="flex flex-row items-center gap-4 px-2 py-1 mb-8">
+        <EventFilterDropdown
+          name="date"
+          label={{ singular: "Dato", plural: "Datoer" }}
+          items={availableDates}
+          onValueChange={(value) => handleFilterSelection(value, "date")}
+          selectedValue={selectedDateValue}
+        />
+        <EventFilterDropdown
+          name="locationId"
+          label={{ singular: "Lokation", plural: "Lokationer" }}
+          items={availableLocations}
+          onValueChange={(value) => handleFilterSelection(value, "locationId")}
+          selectedValue={selectedLocationValue}
+        />
+        {isFiltering && (
+          <p className="ml-4 text-blue-600">Indlæser events...</p>
+        )}
+      </aside>
 
       <EventGallery
         dataevent={initialEvents}

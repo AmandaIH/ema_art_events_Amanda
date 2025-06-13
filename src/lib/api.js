@@ -19,7 +19,7 @@ export async function getEventId(id) {
 export async function getEventDates() {
   const EventsDates = await fetch(
     "https://ema-async-exhibit-server.onrender.com/dates"
-  ); //skift url med eksterne server side når det er deployet
+  );
   const eventsdates = await EventsDates.json();
   return eventsdates;
 }
@@ -27,7 +27,7 @@ export async function getEventDates() {
 export async function getEventLocations() {
   const EventsLocations = await fetch(
     "https://ema-async-exhibit-server.onrender.com/locations"
-  ); //skift url med eksterne server side når det er deployet
+  );
   const eventslocations = await EventsLocations.json();
   return eventslocations;
 }
@@ -72,10 +72,11 @@ export async function getSMKImg(filters = []) {
 
 export async function getArtworkByEventID(objectNumber) {
   const url = `https://api.smk.dk/api/v1/art?object_number=${objectNumber}`;
-  const res = await fetch(url);
-  const data = await res.json();
-  const artImg = data.items?.[0];
-  return artImg;
+  const data = await fetch(url)
+    .then((res) => res.json())
+    .then((data) => data.items[0]);
+
+  return data;
 }
 export async function getAllArtworksByEventID(objectNumber) {
   const url = `https://api.smk.dk/api/v1/art?object_number=${objectNumber}`;

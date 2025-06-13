@@ -9,7 +9,7 @@ import {
   SelectLabel,
   SelectTrigger,
   SelectValue,
-} from "@/components/ui/select"; // Antager du bruger Shadcn UI
+} from "@/components/ui/select";
 
 export default function EventFilterDropdown({
   name,
