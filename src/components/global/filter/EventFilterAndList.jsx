@@ -12,6 +12,7 @@ export default function EventFilterAndList({
   availableDates,
   availableLocations,
 }) {
+  console.log("EventFilterAndList", initialEvents);
   const pathname = usePathname();
   const [filterState, formAction, isFiltering] = useActionState(filterEvents, {
     active: [],
@@ -42,8 +43,7 @@ export default function EventFilterAndList({
       .find((f) => f.startsWith("locationId:"))
       ?.split(":")[1] || "all";
   console.log(
-    "initialEvents",
-    initialEvents,
+    "EventFilterandList",
     "filterState",
     filterState,
     "initialEvents.filterState.data",
@@ -83,9 +83,9 @@ export default function EventFilterAndList({
         address={initialEvents.address}
         totalTickets={initialEvents.totalTickets}
         bookedTickets={initialEvents.bookedTickets}
-        artImg={initialEvents.artImg}
-        displayedEvents={initialEvents.filterState.data}
-        availableLocations={initialEvents.availableLocations}
+        artImgs={initialEvents.artImgs}
+        displayedEvents={filterState.data}
+        availableLocations={availableLocations}
       />
     </>
   );

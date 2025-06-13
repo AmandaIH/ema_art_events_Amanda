@@ -14,7 +14,7 @@ const EventGallery = ({
   address,
   totalTickets,
   bookedTickets,
-  artImg,
+  artImgs,
   displayedEvents,
   availableLocations,
 }) => {
@@ -31,14 +31,14 @@ const EventGallery = ({
                 ?.name || "Ukendt lokation";
             return (
               <EventItem
-                key={id}
+                key={dataevent.id}
                 title={title}
                 description={description}
                 locationName={locationName}
                 address={address}
                 totalTickets={totalTickets}
                 bookedTickets={bookedTickets}
-                artImg={artImg}
+                artImgs={artImgs}
                 showTicketCounter={true}
               >
                 {isDashboardPage && (

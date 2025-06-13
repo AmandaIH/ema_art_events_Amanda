@@ -12,14 +12,13 @@ const EventItem = ({
   address,
   totalTickets,
   bookedTickets,
-  artImg,
+  artImgs,
 }) => {
-  console.log("EventItem", initialEvents);
-  const artImgs = initialEvents;
+  console.log("EventItem: ", artImgs);
   const primaryArtImg =
     artImgs.items && artImgs.items.length > 0 ? artImgs.items[0] : null;
   const imageUrl = primaryArtImg?.image_thumbnail || Placeholder.src;
-  console.log("??: ", imageUrl);
+
   return (
     <article className="grid @max-[474px]:grid-cols-1 @max-[474px]:grid-rows-auto @min-[475px]:grid-cols-2 @min-[475px]:grid-rows-1">
       <figure className="max-w-[210px] h-[325px] md:col-1 grid grid-cols-1 grid-rows-3 ">
