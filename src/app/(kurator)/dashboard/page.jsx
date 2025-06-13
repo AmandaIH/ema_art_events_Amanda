@@ -3,7 +3,6 @@ import {
   getEvent,
   getEventDates,
   getEventLocations,
-  getNeededArtworkDataPrEvent,
 } from "@/lib/api";
 
 import EventFilterAndList from "@/components/global/filter/EventFilterAndList";
@@ -15,16 +14,13 @@ export default async function Dashboard() {
 
   //Til Content
   const eventsData = await getEvent();
-
   const eventDataWithArtworks = await Promise.all(
     eventsData.map(async (event) => {
-      const imageData = await getAllArtworksByEventID(event.artworkIds);
-      return [[event], [imageData]];
+      const artImgs = await getAllArtworksByEventID(event.artworkIds);
+      return { ...event, artImgs };
     })
   );
 
-  const noget = await getNeededArtworkDataPrEvent();
-  console.log("combinedArray", eventDataWithArtworks, "noget", noget);
   return (
     <main>
       <EventFilterAndList

@@ -84,40 +84,6 @@ export async function getAllArtworksByEventID(objectNumber) {
   return data;
 }
 
-//Alle artworkId'er Data pr. Event, istedet for at det stod på dashboard page.jsx
-export async function getNeededArtworkDataPrEvent() {
-  const dataevent = await getEvent();
-  return await Promise.all(
-    dataevent.map(async (event) => {
-      let artImgsData = [];
-      if (event.artworkIds) {
-        artImgsData = await Promise.all(
-          event.artworkIds.map(async (artworkId) => {
-            const imgData = await getArtworkByEventID(artworkId);
-            return imgData;
-          })
-        );
-        artImgsData = artImgsData
-          .filter((img) => img !== null)
-          .map((imageData) => ({
-            id: imageData.object_number,
-            titel: imageData.titles?.titel,
-            image_thumbnail: imageData.image_thumbnail,
-            has_image: imageData.has_image,
-            suggested_bg_color: imageData.suggested_bg_color,
-            techniques: imageData.techniques,
-            // tilføj her hvis du ønsker mere data pr. artwork der er tilknyttet til hvert event.
-            // f.eks. imageData.(hvad end du skal bruge fra SMK Api'et)
-          }));
-      }
-      return {
-        ...event,
-        artImgs: artImgsData,
-      };
-    })
-  );
-}
-
 // Filter (getSMKFilter behøves ikke længere, da getSMKImg nu håndterer filtrering)
 // Eksisterende getSMKFilter kan fjernes eller beholdes, hvis den bruges andre steder.
 // Hvis den kun bruges her, kan den fjernes.

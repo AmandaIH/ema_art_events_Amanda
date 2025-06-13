@@ -13,7 +13,6 @@ export default function EventFilterAndList({
   availableLocations,
 }) {
   const pathname = usePathname();
-
   const [filterState, formAction, isFiltering] = useActionState(filterEvents, {
     active: [],
     data: initialEvents,
@@ -70,7 +69,7 @@ export default function EventFilterAndList({
       )}
 
       <EventGallery
-        initialEvents={initialEvents}
+        dataevent={initialEvents}
         displayedEvents={filterState.data}
         availableLocations={availableLocations}
       />
