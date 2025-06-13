@@ -12,6 +12,9 @@ export default function EventFilterAndList({
   availableDates,
   availableLocations,
   data,
+  //Fra visitor site
+  selectedDateValue,
+  selectedLocationValue,
 }) {
   // console.log("initialEvents", initialEvents);
   // const pathname = usePathname();
@@ -70,14 +73,14 @@ export default function EventFilterAndList({
           onValueChange={(value) => handleFilterSelection(value, "locationId")}
           selectedValue={selectedLocationValue}
         />
-        {isFiltering && (
+        {/* {isFiltering && (
           <p className="ml-4 text-blue-600">Indlæser events...</p>
-        )}
+        )} */}
       </aside>
 
       <EventGallery
         dataevent={initialEvents}
-        displayedEvents={filterState.data}
+        // displayedEvents={filterState.data}
         availableLocations={availableLocations}
       />
     </>

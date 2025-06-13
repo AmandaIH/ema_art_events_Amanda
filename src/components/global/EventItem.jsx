@@ -47,6 +47,7 @@ const EventItem = async ({
         address={address}
         totalTickets={totalTickets}
         bookedTickets={bookedTickets}
+        isDashboardPage={true}
       ></EventItemText>
     </article>
   );

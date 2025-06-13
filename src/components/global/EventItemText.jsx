@@ -28,11 +28,17 @@ import {
 } from "@/components/ui/alert-dialog";
 import { useRouter } from "next/navigation";
 
-const EventItemText = ({ id, title, location, description, date, address }) => {
+const EventItemText = ({
+  id,
+  title,
+  location,
+  description,
+  date,
+  address,
+  isDashboardPage,
+}) => {
   console.log("locationName", location);
-  const pathname = usePathname();
-  const isEventsPage = pathname?.startsWith("/events");
-  const isDashboardPage = pathname?.startsWith("/dashboard");
+
   const [open, setOpen] = useState(false);
   const router = useRouter();
 
@@ -88,7 +94,7 @@ const EventItemText = ({ id, title, location, description, date, address }) => {
             : "flex-row items-center justify-between"
         }`}
       >
-        {isEventsPage ? (
+        {!isDashboardPage ? (
           <div onMouseOver={handleHover} onMouseLeave={handleLeave}>
             <Link
               href={`/eventView/${id}`}
