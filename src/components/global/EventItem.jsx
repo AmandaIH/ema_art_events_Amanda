@@ -1,11 +1,13 @@
 import { getArtworkByEventID } from "@/lib/api";
 import Image from "next/image";
+import EventItemText from "./EventItemText";
 
 const EventItem = async ({
+  id,
   title,
   description,
   date,
-  // locationName,
+  location,
   address,
   totalTickets,
   bookedTickets,
@@ -35,17 +37,17 @@ const EventItem = async ({
           />
         </div>
       </figure>
-      <p>{title}</p>
 
-      {/* <EventItemText
+      <EventItemText
+        id={id}
         title={title}
         description={description}
         date={date}
-        locationName={locationName}
+        location={location}
         address={address}
         totalTickets={totalTickets}
         bookedTickets={bookedTickets}
-      ></EventItemText> */}
+      ></EventItemText>
     </article>
   );
 };

@@ -1,19 +1,19 @@
 import { getEvent, getEventDates, getEventLocations } from "@/lib/api";
 import EventGallery from "@/components/global/EventGallery";
 import EventFilterDropdown from "@/components/global/filter/EventFilterDropdown";
+import CustomButton from "@/components/global/CustomButton";
 
 export default async function Dashboard({ searchParams }) {
   const { dato, lokation } = await searchParams;
-  console.log("date før", dato);
 
   const eventsData = await getEvent();
 
   const data =
-    dato && dato !== "all" && lokation && dato !== "all"
+    dato && dato !== "all" && lokation && lokation !== "all"
       ? eventsData.filter(
           (event) => event.date === dato && event.location.name === lokation
         )
-      : (dato && dato !== "all") || (lokation && dato !== "all")
+      : (dato && dato !== "all") || (lokation && lokation !== "all")
       ? eventsData.filter(
           (event) => event.date === dato || event.location.name === lokation
         )
@@ -54,7 +54,7 @@ async function Filter({ activeDate, activeLocation }) {
       {filterData.map((filter, id) => {
         return <EventFilterDropdown key={id} {...filter} />;
       })}
-      <button>Submit</button>
+      <CustomButton type="submit" text="Submit"></CustomButton>
     </form>
   );
 }

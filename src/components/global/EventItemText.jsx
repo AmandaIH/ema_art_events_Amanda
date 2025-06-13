@@ -28,7 +28,8 @@ import {
 } from "@/components/ui/alert-dialog";
 import { useRouter } from "next/navigation";
 
-const EventItemText = ({ title, description, locationName, date, address }) => {
+const EventItemText = ({ id, title, location, description, date, address }) => {
+  console.log("locationName", location);
   const pathname = usePathname();
   const isEventsPage = pathname?.startsWith("/events");
   const isDashboardPage = pathname?.startsWith("/dashboard");
@@ -74,7 +75,7 @@ const EventItemText = ({ title, description, locationName, date, address }) => {
         <CardDescription>{"17.00"}</CardDescription>
       </CardHeader>
       <CardContent className="p-4 pt-0">
-        <p>{locationName}</p>
+        <p>{location.name}</p>
         <p className="mb-4">{address}</p>
 
         <p className="mb-2">{description}</p>
