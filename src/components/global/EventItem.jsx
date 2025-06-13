@@ -4,19 +4,9 @@ import Image from "next/image";
 import Placeholder from "@/app/assets/img/placeholder.png";
 import EventItemText from "./EventItemText";
 
-const EventItem = ({
-  id,
-  title,
-  description,
-  locationName,
-  address,
-  totalTickets,
-  bookedTickets,
-  artImgs,
-}) => {
-  console.log("EventItem: ", artImgs);
-  const primaryArtImg =
-    artImgs.items && artImgs.items.length > 0 ? artImgs.items[0] : null;
+const EventItem = (dataevent) => {
+  const artImgs = dataevent.artImgs.items;
+  const primaryArtImg = artImgs && artImgs.length > 0 ? artImgs[0] : null;
   const imageUrl = primaryArtImg?.image_thumbnail || Placeholder.src;
 
   return (

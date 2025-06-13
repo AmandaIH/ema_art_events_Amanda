@@ -76,14 +76,7 @@ export default function EventFilterAndList({
       )}
 
       <EventGallery
-        id={initialEvents.id}
-        title={initialEvents.title}
-        description={initialEvents.description}
-        locationName={initialEvents.locationName}
-        address={initialEvents.address}
-        totalTickets={initialEvents.totalTickets}
-        bookedTickets={initialEvents.bookedTickets}
-        artImgs={initialEvents.artImgs}
+        dataevent={initialEvents}
         displayedEvents={filterState.data}
         availableLocations={availableLocations}
       />
