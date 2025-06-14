@@ -19,7 +19,6 @@ const EventItemText = async ({
   address,
   isDashboardPage,
 }) => {
-  console.log("EventItemText:", "id: ", id);
   return (
     <Card className={`md:col-2 max-w-[30ch]`} style={{ minWidth: "250px" }}>
       <CardHeader className="p-4 pb-2 relative">
