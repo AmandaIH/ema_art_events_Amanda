@@ -3,7 +3,6 @@
 import { backInOut, motion, useAnimationControls } from "framer-motion";
 import Link from "next/link";
 const ReadMore = ({ id }) => {
-  console.log("ReadMore:", "id: ", id);
   // ---------------- Motion Framer Animation for Læs mere pilen ----------------//
   const controles = useAnimationControls();
   const handleHover = () => {

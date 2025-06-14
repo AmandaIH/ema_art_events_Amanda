@@ -157,78 +157,76 @@ const KuratorForm = ({
   };
 
   const onSubmit = async (data) => {
-    console.log(data);
-    await createEvent(data);
     // Nulstil beskeder før et nyt submit forsøg
-    // setErrorMessage(null);
-    // setSuccessMessage(null);
+    setErrorMessage(null);
+    setSuccessMessage(null);
 
-    // const payload = {
-    //   title: data.title,
-    //   date: data.date,
-    //   locationId: data.locationId,
-    //   description: data.description,
-    //   artworkIds: selectedImages,
-    // };
+    const payload = {
+      title: data.title,
+      date: data.date,
+      locationId: data.locationId,
+      description: data.description,
+      artworkIds: selectedImages,
+    };
 
-    // try {
-    //   let response;
-    //   if (prevData && prevData.id) {
-    //     response = await updateEvent(prevData.id, payload);
-    //   } else {
-    //     response = await createEvent(payload);
-    //   }
+    try {
+      let response;
+      if (prevData && prevData.id) {
+        response = await updateEvent(prevData.id, payload);
+      } else {
+        response = await createEvent(payload);
+      }
 
-    //   if (response.ok) {
-    //     const result = await response.json();
+      if (response.ok) {
+        const result = await response.json();
 
-    //     setSuccessMessage(
-    //       `Eventet er ${prevData ? "opdateret" : "oprettet"} succesfuldt!`
-    //     );
+        setSuccessMessage(
+          `Eventet er ${prevData ? "opdateret" : "oprettet"} succesfuldt!`
+        );
 
-    //     // NYT: Scroll til toppen og forsink redirection ved succes
-    //     if (formRef.current) {
-    //       formRef.current.scrollIntoView({
-    //         behavior: "smooth",
-    //         block: "start",
-    //       });
-    //     }
-    //     setTimeout(() => {
-    //       router.push("/dashboard");
-    //     }, 3000); // Forsink redirection i 3 sekunder (3000 ms)
-    //   } else {
-    //     const errorData = await response.json();
-    //     console.error("Fejl ved event handling via API-rute:", errorData);
-    //     // Brug setErrorMessage til at vise fejlen på skærmen
-    //     let message = "Ukendt fejl.";
-    //     if (
-    //       errorData.message &&
-    //       errorData.message.includes("conflict: another event already exists")
-    //     ) {
-    //       message = "Der findes allerede et event på denne dato og lokation."; // Kortere tekst
-    //     } else if (errorData.message) {
-    //       message = errorData.message;
-    //     }
-    //     setErrorMessage(`Fejl: ${message}`);
-    //     // Scroll til toppen af formularen ved fejl
-    //     if (formRef.current) {
-    //       formRef.current.scrollIntoView({
-    //         behavior: "smooth",
-    //         block: "start",
-    //       });
-    //     }
-    //   }
-    // } catch (error) {
-    //   console.error("Netværksfejl ved submit af event til API-rute:", error);
-    //   // Brug setErrorMessage til at vise netværksfejlen på skærmen
-    //   setErrorMessage(
-    //     "Netværksfejl: Kunne ikke oprette/opdatere event. Tjek din internetforbindelse." // Kortere tekst
-    //   );
-    //   // Scroll til toppen af formularen ved fejl
-    //   if (formRef.current) {
-    //     formRef.current.scrollIntoView({ behavior: "smooth", block: "start" });
-    //   }
-    // }
+        // NYT: Scroll til toppen og forsink redirection ved succes
+        if (formRef.current) {
+          formRef.current.scrollIntoView({
+            behavior: "smooth",
+            block: "start",
+          });
+        }
+        setTimeout(() => {
+          router.push("/dashboard");
+        }, 3000); // Forsink redirection i 3 sekunder (3000 ms)
+      } else {
+        const errorData = await response.json();
+        console.error("Fejl ved event handling via API-rute:", errorData);
+        // Brug setErrorMessage til at vise fejlen på skærmen
+        let message = "Ukendt fejl.";
+        if (
+          errorData.message &&
+          errorData.message.includes("conflict: another event already exists")
+        ) {
+          message = "Der findes allerede et event på denne dato og lokation."; // Kortere tekst
+        } else if (errorData.message) {
+          message = errorData.message;
+        }
+        setErrorMessage(`Fejl: ${message}`);
+        // Scroll til toppen af formularen ved fejl
+        if (formRef.current) {
+          formRef.current.scrollIntoView({
+            behavior: "smooth",
+            block: "start",
+          });
+        }
+      }
+    } catch (error) {
+      console.error("Netværksfejl ved submit af event til API-rute:", error);
+      // Brug setErrorMessage til at vise netværksfejlen på skærmen
+      setErrorMessage(
+        "Netværksfejl: Kunne ikke oprette/opdatere event. Tjek din internetforbindelse." // Kortere tekst
+      );
+      // Scroll til toppen af formularen ved fejl
+      if (formRef.current) {
+        formRef.current.scrollIntoView({ behavior: "smooth", block: "start" });
+      }
+    }
   };
 
   const handleFilterSelection = (value, name) => {

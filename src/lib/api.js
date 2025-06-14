@@ -123,7 +123,6 @@ export async function getSMKFilterCat() {
 // --------------------------------   Til Event Create, Edit og Delete   --------------------------------------------//
 
 export async function createEvent(indhold) {
-  console.log(indhold);
   await fetch(asyncEvents, {
     method: "POST",
     headers: {
@@ -149,6 +148,5 @@ export async function deleteEvent(id) {
   const response = await fetch(`${asyncEvents}/${id}`, {
     method: "DELETE",
   });
-  console.log(response);
   return response.json(); // Denne kan forblive som den er, hvis du kun bruger den til at få bekræftelse
 }
