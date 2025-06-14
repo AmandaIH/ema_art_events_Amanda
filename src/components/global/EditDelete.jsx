@@ -1,49 +1,44 @@
 "use client";
 
-import { useRouter } from "next/navigation";
-import { useState } from "react";
+import { redirect } from "next/navigation";
 import {
+  AlertDialog,
   AlertDialogAction,
+  AlertDialogCancel,
   AlertDialogContent,
   AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
   AlertDialogTitle,
   AlertDialogTrigger,
-  AlertDialogHeader,
-} from "@radix-ui/react-alert-dialog";
+} from "../ui/alert-dialog";
 
-const CreateDelete = ({ id }) => {
-  const [open, setOpen] = useState(false);
-  const router = useRouter();
+import CustomButton from "./CustomButton";
+import { deleteEvent } from "@/lib/api";
+
+const EditDelete = ({ id }) => {
   const handleDelete = async () => {
     try {
-      const response = await fetch(
-        `https://ema-async-exhibit-server.onrender.com/events/${id}`,
-        {
-          method: "DELETE",
-        }
-      );
-      if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`);
+      const response = await deleteEvent(id);
+      if (!response.event) {
+        throw new Error(`HTTP error! status: ${response.message}`);
       }
-      alert("Event slettet succesfuldt!");
-      setOpen(false);
-      router.refresh("/dashboard");
     } catch (error) {
       console.error("Fejl ved sletning af event:", error);
       alert("Der skete en fejl under sletning af eventet.");
-      setOpen(false);
     }
+    alert("Event slettet succesfuldt!");
+    redirect("/dashboard");
   };
 
   return (
     <div className="flex items-center gap-2" style={{ marginBottom: "auto" }}>
       <CustomButton
         text="Rediger"
-        onClick={() => {
-          router.push(`/create_edit?eventId=${id}`);
-        }}
+        type="link"
+        link={`/create_edit?eventId=${id}`}
       />
-      <AlertDialog open={open} onOpenChange={setOpen}>
+      <AlertDialog>
         <AlertDialogTrigger asChild>
           <CustomButton text="Slet" variant="destructive" />
         </AlertDialogTrigger>
@@ -56,13 +51,7 @@ const CreateDelete = ({ id }) => {
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter className="sm:justify-end">
-            <AlertDialogCancel
-              onClick={() => {
-                setOpen(false);
-              }}
-            >
-              Annuller
-            </AlertDialogCancel>
+            <AlertDialogCancel>Annuller</AlertDialogCancel>
             <AlertDialogAction onClick={handleDelete}>Slet</AlertDialogAction>
           </AlertDialogFooter>
         </AlertDialogContent>
@@ -71,4 +60,4 @@ const CreateDelete = ({ id }) => {
   );
 };
 
-export default CreateDelete;
+export default EditDelete;

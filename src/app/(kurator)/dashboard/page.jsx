@@ -2,12 +2,11 @@ import { getEvent, getEventDates, getEventLocations } from "@/lib/api";
 import EventGallery from "@/components/global/EventGallery";
 import EventFilterDropdown from "@/components/global/filter/EventFilterDropdown";
 import CustomButton from "@/components/global/CustomButton";
+import { asyncEvents } from "@/lib/endpoints";
 
 export default async function Dashboard({ searchParams }) {
   const { dato, lokation } = await searchParams;
-
   const eventsData = await getEvent();
-
   const data =
     dato && dato !== "all" && lokation && lokation !== "all"
       ? eventsData.filter(

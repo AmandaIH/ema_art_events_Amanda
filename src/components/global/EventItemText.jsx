@@ -8,9 +8,9 @@ import {
 } from "@/components/ui/card";
 
 import ReadMore from "./Readmore";
-import CreateDelete from "./CreateDelete";
+import EditDelete from "./EditDelete";
 
-const EventItemText = ({
+const EventItemText = async ({
   id,
   title,
   location,
@@ -39,7 +39,7 @@ const EventItemText = ({
             : "flex-row items-center justify-between"
         }`}
       >
-        {!isDashboardPage ? <ReadMore id={id} /> : <CreateDelete id={id} />}
+        {!isDashboardPage ? <ReadMore id={id} /> : <EditDelete id={id} />}
       </CardFooter>
     </Card>
   );
