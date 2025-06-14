@@ -12,6 +12,7 @@ const EventItem = async ({
   totalTickets,
   bookedTickets,
   artworkIds,
+  isDashboardPage,
 }) => {
   const { image_thumbnail, image_width, image_height, suggested_bg_color } =
     await getArtworkByEventID(artworkIds[0]);
@@ -47,7 +48,7 @@ const EventItem = async ({
         address={address}
         totalTickets={totalTickets}
         bookedTickets={bookedTickets}
-        isDashboardPage={true}
+        isDashboardPage={isDashboardPage}
       ></EventItemText>
     </article>
   );

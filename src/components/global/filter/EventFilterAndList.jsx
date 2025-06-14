@@ -1,10 +1,6 @@
 "use client";
 
-import React, { useActionState, startTransition } from "react";
-import { usePathname } from "next/navigation";
-
 import EventFilterDropdown from "./EventFilterDropdown";
-import { filterEvents } from "./filterEvents";
 import EventGallery from "../EventGallery";
 
 export default function EventFilterAndList({
@@ -16,46 +12,6 @@ export default function EventFilterAndList({
   selectedDateValue,
   selectedLocationValue,
 }) {
-  // console.log("initialEvents", initialEvents);
-  // const pathname = usePathname();
-  // const [filterState, formAction, isFiltering] = useActionState(filterEvents, {
-  //   active: [],
-  //   data: data,
-  //   totalFound: initialEvents.length,
-  // });
-
-  // const handleFilterSelection = (value, name) => {
-  //   let currentFilters = filterState.active.filter(
-  //     (f) => !f.startsWith(`${name}:`)
-  //   );
-  //   let newFilters = [...currentFilters];
-
-  //   if (value !== "all") {
-  //     newFilters.push(`${name}:${value}`);
-  //   }
-
-  //   startTransition(() => {
-  //     formAction(newFilters);
-  //   });
-  // };
-
-  // const selectedDateValue =
-  //   filterState.active.find((f) => f.startsWith("date:"))?.split(":")[1] ||
-  //   "all";
-  // const selectedLocationValue =
-  //   filterState.active
-  //     .find((f) => f.startsWith("locationId:"))
-  //     ?.split(":")[1] || "all";
-  // console.log(
-  //   "EventFilterandList",
-  //   "filterState",
-  //   filterState,
-  //   "initialEvents.filterState.data",
-  //   initialEvents.filterState
-  // );
-
-  const signedIn = true;
-
   return (
     <>
       <aside className="flex flex-row items-center gap-4 px-2 py-1 mb-8">
@@ -73,12 +29,10 @@ export default function EventFilterAndList({
           onValueChange={(value) => handleFilterSelection(value, "locationId")}
           selectedValue={selectedLocationValue}
         />
-        {/* {isFiltering && (
-          <p className="ml-4 text-blue-600">Indlæser events...</p>
-        )} */}
       </aside>
 
       <EventGallery
+        isDashboardPage={true}
         dataevent={initialEvents}
         // displayedEvents={filterState.data}
         availableLocations={availableLocations}

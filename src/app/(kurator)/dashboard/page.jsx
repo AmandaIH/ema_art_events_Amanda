@@ -22,7 +22,7 @@ export default async function Dashboard({ searchParams }) {
   return (
     <main>
       <Filter activeDate={dato} activeLocation={lokation} />
-      <EventGallery data={data} />
+      <EventGallery data={data} isDashboardPage={true} />
     </main>
   );
 }
