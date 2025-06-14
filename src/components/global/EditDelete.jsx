@@ -17,6 +17,7 @@ import CustomButton from "./CustomButton";
 import { deleteEvent } from "@/lib/api";
 
 const EditDelete = ({ id }) => {
+  console.log("hej");
   const handleDelete = async () => {
     try {
       const response = await deleteEvent(id);
