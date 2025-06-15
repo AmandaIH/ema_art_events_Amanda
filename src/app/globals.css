@@ -96,11 +96,12 @@ body {
   grid-template-rows: auto 1fr;
   min-height: 100dvh;
 }
-body > *:not(.halfbleed):not(.home-background-wrapper) {
+body > *:not(.halfbleed):not(.home-background-wrapper):not(header):not(footer) {
   grid-column: 2;
 }
 
 header {
+  grid-column: 1 / -1;
   grid-row: 1;
   height: 4rem;
   display: flex;
@@ -109,6 +110,10 @@ header {
   padding: 0 1rem;
   box-sizing: border-box;
 }
+footer {
+  grid-column: 1 / -1;
+}
+
 .home-background-wrapper {
   grid-column: 1/-1;
   grid-row: 2/-1;

@@ -2,6 +2,7 @@
 
 import { usePathname } from "next/navigation";
 import Header from "./Header";
+import Footer from "./Footer";
 
 export default function ThemeWrapper({ children }) {
   const pathname = usePathname();
@@ -26,6 +27,7 @@ export default function ThemeWrapper({ children }) {
     >
       <Header backgroundColor={currentBackgroundColor} />
       {children}
+      <Footer backgroundColor={currentBackgroundColor} />
     </body>
   );
 }

@@ -36,7 +36,10 @@ const Header = ({ backgroundColor }) => {
   };
 
   return (
-    <header className="flex items-center justify-between p-4 border-b z-4">
+    <header
+      className="flex items-center justify-between p-4 border-b z-4"
+      style={{ backgroundColor: backgroundColor }}
+    >
       <Link href="/" className=" font-bold">
         SMK
       </Link>

@@ -2,10 +2,6 @@ import Image from "next/image";
 import CustomButton from "../components/global/CustomButton";
 import OpacityTextBox from "../components/global/OpacityTextBox";
 export default function Home() {
-  const openingHours = `Tirsdag - søndag 10 - 18 <br />
-Onsdag 10 – 20 <br />
-Mandag Lukket`;
-
   const imageUrl =
     "https://iip-thumb.smk.dk/iiif/jp2/s4655m751_kks2020_3_2.tif.jp2/full/!1024,/0/default.jpg";
 
@@ -21,19 +17,31 @@ Mandag Lukket`;
         />
       </div>
 
-      <main className="relative z-10 w-full md:gap-(--space-1rem) md:pl-(--space-2rem)">
-        <h1 className="md:w-[15ch] h-fit bg-white col-start-1 row-1 text-blue-500 rounded-md">
+      <main className="relative z-10 p-4 grid grid-cols-2 grid-rows-2">
+        <div className="bg-black opacity-90 col-start-1 col-end-2 row-span-full"></div>
+        <h1 className="h-fit bg-white text-blue-500 rounded-md text-text-h1 p-4 col-start-1 col-end-3 row-start-1 place-self-center z-3">
           Statens Museum for Kunst
         </h1>
+
+        <section>
+          <h2>Lys og mørke</h2>
+          <h3>d. 05.05.2025</h3>
+          <p>
+            En udstilling der udforsker abstrakte kunstformer gennem forskellige
+            medier.
+          </p>
+        </section>
+
         <CustomButton
-          className="col-start-1 row-2 text-xl"
+          className="text-md h-fit w-fit col-start-1 row-start-4"
           text="Se alle begivenheder"
           link="/events"
         />
-        <OpacityTextBox
-          className="h-40 w-fit row-3 self-center md:col-start-2 md:row-start-3 md:mb-(--space-4rem)"
-          title="Åbningstider"
-          content={<p dangerouslySetInnerHTML={{ __html: openingHours }} />}
+
+        <CustomButton
+          className="text-md h-fit w-fit ml-2 row-start-4"
+          text="Gå til begivenhed"
+          link="http://localhost:3000/eventView/82a0a6d4-a22b-4d3d-974b-f9e28078985a"
         />
       </main>
     </>
