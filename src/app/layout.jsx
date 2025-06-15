@@ -10,7 +10,7 @@ export const metadata = {
 
 export default function RootLayout({ children }) {
   return (
-    <ClerkProvider>
+    <ClerkProvider frontendApi="clerk.ema-art-events-amanda.dk">
       <html lang="en">
         <ThemeWrapper>{children}</ThemeWrapper>
       </html>
