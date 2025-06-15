@@ -11,9 +11,7 @@ export const metadata = {
 export default function RootLayout({ children }) {
   return (
     <html lang="en">
-      {/* <motion.div {...anim(opacity)}> */}
       <ThemeWrapper>{children}</ThemeWrapper>
-      {/* </motion.div> */}
     </html>
   );
 }
