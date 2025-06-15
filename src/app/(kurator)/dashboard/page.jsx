@@ -4,7 +4,7 @@ import EventFilterDropdown from "@/components/global/filter/EventFilterDropdown"
 import CustomButton from "@/components/global/CustomButton";
 
 export default async function Dashboard({ searchParams }) {
-  console.log("hm?");
+  console.log("hej?");
 
   const { dato, lokation } = await searchParams;
   const eventsData = await getEvent();
