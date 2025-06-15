@@ -7,7 +7,7 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 
-import ReadMore from "./Readmore";
+import ReadMore from "./ReadMore";
 import EditDelete from "./EditDelete";
 
 const EventItemText = async ({
