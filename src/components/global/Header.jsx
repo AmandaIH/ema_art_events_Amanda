@@ -4,18 +4,10 @@ import React, { useState } from "react";
 import { RxHamburgerMenu } from "react-icons/rx";
 import { IoCloseOutline } from "react-icons/io5";
 import Link from "next/link";
-import {
-  SignInButton,
-  UserButton,
-  SignedIn,
-  SignedOut,
-  SignOutButton,
-  useUser,
-} from "@clerk/nextjs";
+import { SignInButton, UserButton, SignedIn, SignedOut } from "@clerk/nextjs";
 
 import {
   NavigationMenu,
-  NavigationMenuContent,
   NavigationMenuItem,
   NavigationMenuLink,
   NavigationMenuList,
@@ -40,7 +32,6 @@ const Header = ({ backgroundColor }) => {
       <Link href="/" className=" font-bold">
         SMK
       </Link>
-
       {/* Desktop Navigation */}
       <NavigationMenu className="hidden lg:flex">
         <NavigationMenuList className="flex space-x-6 items-center">
@@ -60,33 +51,41 @@ const Header = ({ backgroundColor }) => {
               Begivenheder
             </NavigationMenuLink>
           </NavigationMenuItem>
-          <NavigationMenuItem>
-            <NavigationMenuLink
-              href="/dashboard"
-              className="px-3 py-2 text-base font-medium transition-colors hover:text-primary focus:outline-none focus:text-primary"
-            >
-              Kurator
-            </NavigationMenuLink>
-          </NavigationMenuItem>
 
-          <NavigationMenuItem>
-            <NavigationMenuLink
-              href="/create_edit"
-              className="px-3 py-2 text-base font-medium transition-colors hover:text-primary focus:outline-none focus:text-primary"
-            >
-              Lav event
-            </NavigationMenuLink>
-          </NavigationMenuItem>
+          <SignedOut>
+            <SignInButton />
+          </SignedOut>
 
-          <NavigationMenuItem></NavigationMenuItem>
+          <SignedIn>
+            <NavigationMenuItem>
+              <NavigationMenuLink
+                href="/dashboard"
+                className="px-3 py-2 text-base font-medium transition-colors hover:text-primary focus:outline-none focus:text-primary"
+              >
+                Kurator
+              </NavigationMenuLink>
+            </NavigationMenuItem>
+            <NavigationMenuItem>
+              <NavigationMenuLink
+                href="/create_edit"
+                className="px-3 py-2 text-base font-medium transition-colors hover:text-primary focus:outline-none focus:text-primary"
+              >
+                Lav event
+              </NavigationMenuLink>
+            </NavigationMenuItem>
+            <UserButton />
+          </SignedIn>
         </NavigationMenuList>
       </NavigationMenu>
+      {/* ------------------------  Mobil Navigation ------------------------------------*/}
+      <div className="lg:hidden flex flex-row">
+        <SignedIn>
+          <UserButton />
+        </SignedIn>
 
-      {/* Mobil Navigation */}
-      <div className="lg:hidden">
         <DropdownMenu open={isOpen} onOpenChange={setIsOpen}>
           <DropdownMenuTrigger asChild>
-            <button onClick={toggleMenu} className="focus:outline-none">
+            <button onClick={toggleMenu} className="focus:outline-none ml-6">
               {isOpen ? (
                 <IoCloseOutline
                   className="h-6 w-6 text-black"
@@ -112,23 +111,32 @@ const Header = ({ backgroundColor }) => {
             <DropdownMenuItem asChild>
               <Link href="/events">Begivenheder</Link>
             </DropdownMenuItem>
-            <DropdownMenuItem asChild>
-              <Link href="/dashboard">Kurator</Link>
-            </DropdownMenuItem>
             <DropdownMenuSeparator />
 
-            <DropdownMenuItem asChild>
-              <Link
-                href="/create_edit"
-                className="px-3 py-2 text-base font-medium transition-colors hover:text-primary focus:outline-none focus:text-primary"
-              >
-                Lav event
-              </Link>
-            </DropdownMenuItem>
+            <SignedIn>
+              <DropdownMenuItem asChild>
+                <Link href="/dashboard">Kurator</Link>
+              </DropdownMenuItem>
+              <DropdownMenuSeparator />
+              <DropdownMenuItem asChild>
+                <Link
+                  href="/create_edit"
+                  className=" py-2 text-base font-medium transition-colors hover:text-primary focus:outline-none focus:text-primary"
+                >
+                  Lav event
+                </Link>
+              </DropdownMenuItem>
+              <DropdownMenuSeparator />
+            </SignedIn>
+            <DropdownMenuSeparator />
 
-            <DropdownMenuItem asChild></DropdownMenuItem>
-
-            <DropdownMenuItem></DropdownMenuItem>
+            <SignedOut>
+              <DropdownMenuItem asChild>
+                <SignInButton>
+                  <p>Admin</p>
+                </SignInButton>
+              </DropdownMenuItem>
+            </SignedOut>
           </DropdownMenuContent>
         </DropdownMenu>
       </div>
