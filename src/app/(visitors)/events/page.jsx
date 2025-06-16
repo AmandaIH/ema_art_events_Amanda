@@ -10,7 +10,7 @@ import {
 } from "@/lib/api";
 
 // Importér den nye centrale klientkomponent til event-filtrering og liste-visning
-import EventFilterAndList from "@/components/global/filter/EventFilterAndList"; // <-- STIEN ER NU TILPASSET DIN STRUKTUR
+
 import EventGallery from "@/components/global/EventGallery";
 import EventFilterDropdown from "@/components/global/filter/EventFilterDropdown";
 import CustomButton from "@/components/global/CustomButton";

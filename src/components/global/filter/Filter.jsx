@@ -1,7 +1,5 @@
 "use client";
-import Image from "next/image";
-import { startTransition, useActionState } from "react";
-import { filterData } from "./actions";
+
 import FilterDropdown from "./FilterDropdown";
 
 // FILTER
