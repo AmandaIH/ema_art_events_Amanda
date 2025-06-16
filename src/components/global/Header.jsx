@@ -53,7 +53,7 @@ const Header = ({ backgroundColor }) => {
           </NavigationMenuItem>
 
           <SignedOut>
-            <SignInButton />
+            <SignInButton>Admin</SignInButton>
           </SignedOut>
 
           <SignedIn>
