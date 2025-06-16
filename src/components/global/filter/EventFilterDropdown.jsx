@@ -20,7 +20,7 @@ export default function EventFilterDropdown({
   return (
     <Select name={name} defaultValue={active && active}>
       <SelectTrigger className="w-[180px]">
-        <SelectValue placeholder={`Vælg ${singular.toLowerCase()}`} />
+        <SelectValue placeholder={`Filtrer efter ${singular.toLowerCase()}`} />
       </SelectTrigger>
       <SelectContent>
         <SelectGroup>

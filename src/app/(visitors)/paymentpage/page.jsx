@@ -14,6 +14,7 @@ export default function PaymentPage() {
   const [selectedEventDetails, setSelectedEventDetails] = useState(null);
   const { items } = useCartStore();
   const router = useRouter();
+  const [currentStep, setCurrentStep] = useState(1);
 
   useEffect(() => {
     if (items.length > 0) {
@@ -25,17 +26,18 @@ export default function PaymentPage() {
   }, [items, router]);
 
   const handleConfirmPayment = () => {
+    setCurrentStep(2);
     router.push("/paymentconfirmation");
   };
 
   const opacityTextBoxContent = selectedEventDetails
-    ? `Event: ${selectedEventDetails.title}\n\n` + // Tilføjet \n
-      `Dato: ${selectedEventDetails.date || "N/A"}\n\n` + // Tilføjet \n
+    ? `Event: ${selectedEventDetails.title}\n\n` +
+      `Dato: ${selectedEventDetails.date || "N/A"}\n\n` +
       `Sted: ${selectedEventDetails.location?.name || "N/A"}, ${
         selectedEventDetails.location?.address || "N/A"
-      }\n\n` + // Tilføjet \n
-      `Antal billetter: ${selectedEventDetails.quantity}\n\n` + // Tilføjet \n
-      `Pris pr. billet: ${selectedEventDetails.pricePerTicket} DKK` // Fjern `\n` her, da det er den sidste linje
+      }\n\n` +
+      `Antal billetter: ${selectedEventDetails.quantity}\n\n` +
+      `Pris pr. billet: ${selectedEventDetails.pricePerTicket} DKK`
     : "Indlæser eventdetaljer eller ingen events valgt...";
 
   const mockBackgroundColor = "#401F0C";
@@ -47,10 +49,8 @@ export default function PaymentPage() {
       <main className="container mx-auto py-8 z-10">
         <div className="flex flex-col md:flex-row gap-8">
           <div className="flex-grow md:w-2/3">
-            <Step number="1" text="Dine informationer" className="mb-4" />
-
             <PersonalForm
-              className="mt-4"
+              className="mt-12"
               onPaymentConfirmed={handleConfirmPayment}
               selectedEventDetails={selectedEventDetails}
             />
@@ -60,7 +60,7 @@ export default function PaymentPage() {
             <OpacityTextBox
               title="Din ordreoversigt"
               content={opacityTextBoxContent}
-              className="h-[15rem] flex-col w-[15rem] leading-relaxed" // <--- TILFØJET: leading-relaxed
+              className="h-[15rem] flex-col w-[15rem] leading-relaxed"
             />
           </aside>
         </div>

@@ -18,7 +18,7 @@ const EventItem = async ({
     await getArtworkByEventID(artworkIds[0]);
 
   return (
-    <article className="grid @max-[474px]:grid-cols-1 @max-[474px]:grid-rows-auto @min-[475px]:grid-cols-2 @min-[475px]:grid-rows-1">
+    <article className="grid @max-[474px]:grid-cols-1 @max-[474px]:grid-rows-auto @min-[475px]:grid-cols-2 @min-[475px]:grid-rows-1 ">
       <figure className="max-w-[210px] h-[325px] md:col-1 grid grid-cols-1 grid-rows-3 ">
         <div
           className={`max-w-[180px] h-[250px] rounded-sm row-span-2 row-start-1 col-start-1`}

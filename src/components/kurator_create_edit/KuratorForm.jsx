@@ -368,7 +368,7 @@ const KuratorForm = ({
             </FormItem>
           )}
         />
-        {/* Valgte Billeder Sektion - JUSTERET GRID KLASSER OG SIZES HER */}
+        {/* Valgte Billeder Sektion */}
         <div className="space-y-4 border p-4 rounded-lg">
           <Label className="text-lg font-semibold">Valgte Billeder</Label>
           {selectedArtworkDetails.length > 0 ? (
@@ -386,9 +386,7 @@ const KuratorForm = ({
                     sizes="(max-width: 768px) 100px, (max-width: 1200px) 150px, 200px"
                     className="object-cover transition-transform duration-300 group-hover:scale-105 group-hover:brightness-50"
                   />
-                  <div className="absolute inset-0 bg-black/50 flex items-center justify-center pointer-events-none">
-                    <span className="text-white text-2xl">✓</span>{" "}
-                  </div>
+                  <div className="absolute inset-0 bg-black/50 flex items-center justify-center pointer-events-none"></div>
                   {/* Overlay for titel */}
                   <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
                     <p className="text-white text-center text-xs px-2 break-words">
@@ -501,9 +499,10 @@ const KuratorForm = ({
         {/* Submit Button */}
         <CustomButton
           type="submit"
-          text="Submit"
-          className="w-fit text-xl"
+          text="Gem"
+          className="w-fit text-xl mr-2"
         ></CustomButton>
+        <CustomButton text="Annuller" className="w-fit text-xl bg-black" />
       </form>
     </Form>
   );

@@ -166,7 +166,7 @@ const PersonalForm = ({
           </h3>
         )}
 
-        <CustomButton type="submit" text="Book billetter"></CustomButton>
+        <CustomButton type="submit" text="Fortsæt til betaling"></CustomButton>
       </form>
     </FormProvider>
   );

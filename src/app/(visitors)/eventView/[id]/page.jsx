@@ -6,6 +6,7 @@ import TicketCounter from "@/components/global/TicketCounter";
 import { getEventId, getArtworkByEventID } from "@/lib/api";
 import Placeholder from "@/app/assets/img/placeholder.png"; // Importér Placeholder
 import Gallery from "@/components/eventView/Gallery";
+import CustomButton from "@/components/global/CustomButton";
 
 export default async function EventView({ params, searchParams }) {
   const { id } = await params;
@@ -57,7 +58,7 @@ export default async function EventView({ params, searchParams }) {
   const eventLocationName = dataeventid.location?.name || "Ukendt lokation";
 
   const opacityBoxTitle = `${eventDate} - ${eventLocationName}`;
-  const opacityBoxContent = `${dataeventid.title}\n\n${dataeventid.description}`;
+  const opacityBoxContent = `${dataeventid.description}`;
 
   const eventDetailsForCounter = {
     id: dataeventid.id,
@@ -89,8 +90,17 @@ export default async function EventView({ params, searchParams }) {
           "background-image 0.5s ease-in-out, background-color 0.5s ease-in-out",
       }}
     >
-      <main className="z-20 w-full h-full p-6 grid grid-cols-1 grid-rows-[1fr_1fr_auto] gap-4 md:grid-cols-2">
+      <main className="z-20 w-full p-6 grid grid-cols-2 grid-rows-[1fr_1fr_auto] gap-4">
+        <h1 className="text-blue-500 bg-white opacity-80 rounded-md p-4 h-fit w-fit col-start-1 col-end-3 place-self-center">
+          {dataeventid.title}
+        </h1>
         <section className="col-start-1 row-start-2 h-full flex flex-col justify-end items-start">
+          <CustomButton
+            text="Tilbage til begivenheder"
+            className="text-lg text-white underline hover:bg-blue-500 mb-8"
+            link="/events"
+          />
+
           <OpacityTextBox
             title={opacityBoxTitle}
             content={opacityBoxContent}

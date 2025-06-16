@@ -22,12 +22,12 @@ const EventItemText = async ({
   return (
     <Card className={`md:col-2 max-w-[30ch]`} style={{ minWidth: "250px" }}>
       <CardHeader className="p-4 pb-2 relative">
-        <CardTitle className="mb-1">{title}</CardTitle>
+        <CardTitle className="mb-1 text-xl">{title}</CardTitle>
         <CardDescription className="mb-1">{date}</CardDescription>
         <CardDescription>{"17.00"}</CardDescription>
       </CardHeader>
       <CardContent className="p-4 pt-0">
-        <p>{location.name}</p>
+        <p className="">{location.name}</p>
         <p className="mb-4">{address}</p>
         <p className="mb-2">{description}</p>
       </CardContent>
@@ -38,7 +38,11 @@ const EventItemText = async ({
             : "flex-row items-center justify-between"
         }`}
       >
-        {!isDashboardPage ? <ReadMore id={id} /> : <EditDelete id={id} />}
+        {!isDashboardPage ? (
+          <ReadMore id={id} isHome={false} />
+        ) : (
+          <EditDelete id={id} />
+        )}
       </CardFooter>
     </Card>
   );

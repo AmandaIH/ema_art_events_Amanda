@@ -2,7 +2,7 @@
 
 import { backInOut, motion, useAnimationControls } from "framer-motion";
 import Link from "next/link";
-const ReadMore = ({ id }) => {
+const ReadMore = ({ id, isHome }) => {
   // ---------------- Motion Framer Animation for Læs mere pilen ----------------//
   const controles = useAnimationControls();
   const handleHover = () => {
@@ -15,16 +15,20 @@ const ReadMore = ({ id }) => {
     <div onMouseOver={handleHover} onMouseLeave={handleLeave}>
       <Link
         href={`/eventView/${id}`}
-        className="flex items-start underline text-primary"
+        className={
+          isHome
+            ? "text-white flex items-start underline"
+            : "text-blue-500 flex items-start underline"
+        }
       >
-        Se mere
+        Gå til begivenhed
         <svg
           xmlns="http://www.w3.org/2000/svg"
           width="60"
           height="20"
           viewBox="0 0 64 16"
           fill="currentColor"
-          className="ml-2 flex flex-start"
+          className={`ml-2 flex flex-start `}
         >
           <motion.path
             fillRule="evenodd"

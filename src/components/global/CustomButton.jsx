@@ -13,7 +13,7 @@ const CustomButton = ({
 }) => {
   if (link) {
     return (
-      <Link href={link} className={className}>
+      <Link href={link}>
         <ShadcnButton
           variant={variant}
           size={size}

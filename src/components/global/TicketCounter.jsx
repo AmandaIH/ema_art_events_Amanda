@@ -160,7 +160,7 @@ const TicketCounter = ({
       )}
       <CustomButton
         onClick={handleRegister}
-        text={isSoldOut ? "Udsolgt" : "Tilmeld"}
+        text={isSoldOut ? "Udsolgt" : "Fortsæt til booking"}
         disabled={isSoldOut || currentTicketQuantity <= 0}
       />
     </div>

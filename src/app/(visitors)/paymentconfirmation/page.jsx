@@ -61,8 +61,16 @@ Totalpris: ${
           <h2 className="text-3xl font-bold mb-4 text-white">
             Tak for din bestilling!
           </h2>
+          <h4 className="text-white text-xl mb-4">
+            Billetter er sendt til din email
+          </h4>
 
           <CustomButton text="Tilbage til forsiden" onClick={handleGoHome} />
+          <CustomButton
+            className=""
+            text="Se alle begivenheder"
+            link="/events"
+          />
         </section>
         <aside className="col-2 row-1 justify-self-center mt-20">
           <OpacityTextBox

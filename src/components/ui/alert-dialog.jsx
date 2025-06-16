@@ -97,7 +97,7 @@ function AlertDialogDescription({ className, ...props }) {
 function AlertDialogAction({ className, ...props }) {
   return (
     <AlertDialogPrimitive.Action
-      className={cn(buttonVariants(), className)}
+      className={cn(buttonVariants(), className, "bg-[#e7000b]")}
       {...props}
     />
   );

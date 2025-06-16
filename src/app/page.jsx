@@ -1,6 +1,7 @@
 import Image from "next/image";
 import CustomButton from "../components/global/CustomButton";
-import OpacityTextBox from "../components/global/OpacityTextBox";
+
+import ReadMore from "@/components/global/ReadMore";
 export default function Home() {
   const imageUrl =
     "https://iip-thumb.smk.dk/iiif/jp2/s4655m751_kks2020_3_2.tif.jp2/full/!1024,/0/default.jpg";
@@ -17,32 +18,33 @@ export default function Home() {
         />
       </div>
 
-      <main className="relative z-10 p-4 grid grid-cols-2 grid-rows-2">
-        <div className="bg-black opacity-90 col-start-1 col-end-2 row-span-full"></div>
-        <h1 className="h-fit bg-white text-blue-500 rounded-md text-text-h1 p-4 col-start-1 col-end-3 row-start-1 place-self-center z-3">
-          Statens Museum for Kunst
-        </h1>
+      <main className="relative z-10 grid grid-cols-2 grid-rows-2 w-full">
+        <div className="bg-black opacity-90 col-start-1 col-end-2 row-start-1 row-end-3 grid grid-cols-[2fr_1fr] grid-rows-1 max-w-[500px] h-full">
+          <section className="col-start-1 col-end-2 row-start-2 row-end-3 z-4 text-white pl-4 pb-4">
+            <h2 className="mb-4 mt-20">Lys og mørke</h2>
+            <h3>d. 05.05.2025</h3>
+            <p className="mt-4 mb-4">
+              En udstilling der udforsker abstrakte kunstformer gennem
+              forskellige medier.
+            </p>
+            <ReadMore isHome={true} />
 
-        <section>
-          <h2>Lys og mørke</h2>
-          <h3>d. 05.05.2025</h3>
-          <p>
-            En udstilling der udforsker abstrakte kunstformer gennem forskellige
-            medier.
+            <CustomButton
+              className="text-md h-fit w-fit col-start-1 row-start-4 mt-16"
+              text="Se alle begivenheder"
+              link="/events"
+            />
+          </section>
+        </div>
+        <div className="col-start-1 col-end-3 row-start-1 place-self-center z-3 mb-8">
+          <h1 className="h-fit bg-white opacity-90 text-blue-500 rounded-md text-text-h1 p-4 ">
+            Statens Museum for Kunst
+          </h1>
+          <p className="text-white bg-blue-500 opacity-90 rounded-md p-2 w-fit mt-2">
+            Udforsk kunst, begivenheder og oplevelser på Statens Museum for
+            Kunst.
           </p>
-        </section>
-
-        <CustomButton
-          className="text-md h-fit w-fit col-start-1 row-start-4"
-          text="Se alle begivenheder"
-          link="/events"
-        />
-
-        <CustomButton
-          className="text-md h-fit w-fit ml-2 row-start-4"
-          text="Gå til begivenhed"
-          link="http://localhost:3000/eventView/82a0a6d4-a22b-4d3d-974b-f9e28078985a"
-        />
+        </div>
       </main>
     </>
   );

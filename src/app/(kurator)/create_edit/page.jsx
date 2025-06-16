@@ -46,13 +46,16 @@ export default async function CreateEditEventPage({ searchParams }) {
 
   return (
     <main>
+      <h1 className="text-blue-500 justify-self-center p-4">
+        Opret/rediger begivenhed
+      </h1>
       <KuratorForm
         images={images}
         events={events}
         locations={locations}
         prevData={prevData}
         filterCategories={filterCategories}
-        prevSelectedArtworkDetails={prevSelectedArtworkDetails} // <-- NY PROP
+        prevSelectedArtworkDetails={prevSelectedArtworkDetails}
       />
     </main>
   );

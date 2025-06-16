@@ -14,13 +14,16 @@ export default async function Dashboard({ searchParams }) {
           (event) => event.date === dato && event.location.name === lokation
         )
       : (dato && dato !== "all") || (lokation && lokation !== "all")
-      ? eventsData.filter(
-          (event) => event.date === dato || event.location.name === lokation
-        )
-      : eventsData;
+        ? eventsData.filter(
+            (event) => event.date === dato || event.location.name === lokation
+          )
+        : eventsData;
 
   return (
     <main>
+      <h1 className="text-blue-500 justify-self-center p-4">
+        Kurator dashboard
+      </h1>
       <Filter activeDate={dato} activeLocation={lokation} />
       <EventGallery data={data} isDashboardPage={true} />
     </main>
@@ -54,7 +57,7 @@ async function Filter({ activeDate, activeLocation }) {
       {filterData.map((filter, id) => {
         return <EventFilterDropdown key={id} {...filter} />;
       })}
-      <CustomButton type="submit" text="Submit"></CustomButton>
+      <CustomButton type="submit" text="Find"></CustomButton>
     </form>
   );
 }
