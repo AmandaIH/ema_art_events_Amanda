@@ -25,11 +25,7 @@ Mandag Lukket`;
         <h1 className="md:w-[15ch] h-fit bg-white col-start-1 row-start-1 text-blue-500 rounded-md">
           Statens Museum for Kunst
         </h1>
-        <CustomButton
-          className="col-start-1 row-2 text-xl"
-          text="Se alle begivenheder"
-          link="/events"
-        />
+        <CustomButton text="Se alle begivenheder" link="/events" />
         <OpacityTextBox
           className="h-40 w-fit row-3 self-center md:col-start-2 md:row-start-3 md:mb-(--space-4rem)"
           title="Åbningstider"
