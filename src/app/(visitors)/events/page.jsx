@@ -15,7 +15,7 @@ import EventGallery from "@/components/global/EventGallery";
 import EventFilterDropdown from "@/components/global/filter/EventFilterDropdown";
 import CustomButton from "@/components/global/CustomButton";
 
-export default async function Events(searchParams) {
+export default async function Events({ searchParams }) {
   const { dato, lokation } = await searchParams;
 
   const eventsData = await getEvent();
@@ -30,7 +30,7 @@ export default async function Events(searchParams) {
           (event) => event.date === dato || event.location.name === lokation
         )
       : eventsData;
-
+  console.log("data: ", data);
   return (
     <main>
       <Filter activeDate={dato} activeLocation={lokation} />
