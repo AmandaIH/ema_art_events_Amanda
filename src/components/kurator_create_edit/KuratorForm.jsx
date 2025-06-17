@@ -169,6 +169,7 @@ const KuratorForm = ({
       artworkIds: selectedImages,
     };
 
+    console.log("PAYLOAD: ", payload);
     try {
       let response;
       if (prevData && prevData.id) {
@@ -177,9 +178,9 @@ const KuratorForm = ({
         response = await createEvent(payload);
       }
 
-      if (response.ok) {
-        const result = await response.json();
+      console.log("TEST RESPONSE: ", response);
 
+      if (response) {
         setSuccessMessage(
           `Eventet er ${prevData ? "opdateret" : "oprettet"} succesfuldt!`
         );
@@ -269,7 +270,7 @@ const KuratorForm = ({
             </span>
           </div>
         )}
-        {/* Vis succesmeddelelse her med Tailwind CSS */}
+        {/* Viser succesmeddelelse her med Tailwind CSS */}
         {successMessage && (
           <div
             className="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded relative"
@@ -387,7 +388,7 @@ const KuratorForm = ({
                     className="object-cover transition-transform duration-300 group-hover:scale-105 group-hover:brightness-50"
                   />
                   <div className="absolute inset-0 bg-black/50 flex items-center justify-center pointer-events-none">
-                    <span className="text-white text-2xl">✓</span>{" "}
+                    <span className="text-white text-2xl">✓</span>
                   </div>
                   {/* Overlay for titel */}
                   <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">

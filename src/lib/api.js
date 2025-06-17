@@ -123,15 +123,15 @@ export async function getSMKFilterCat() {
 // --------------------------------   Til Event Create, Edit og Delete   --------------------------------------------//
 
 export async function createEvent(indhold) {
-  await fetch(asyncEvents, {
+  const data = await fetch(asyncEvents, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
     },
     body: JSON.stringify(indhold),
-  })
-    .then((res) => res.json())
-    .then((data) => console.log(data));
+  }).then((res) => res.json());
+
+  return data;
 }
 
 export async function updateEvent(id, eventData) {
