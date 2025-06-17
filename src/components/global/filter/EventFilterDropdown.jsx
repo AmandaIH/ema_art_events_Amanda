@@ -19,7 +19,10 @@ export default function EventFilterDropdown({
 }) {
   return (
     <Select name={name} defaultValue={active && active}>
-      <SelectTrigger className="w-full md:w-[180px] self-center">
+      <SelectTrigger
+        aria-label={name}
+        className="w-full md:w-[180px] self-center "
+      >
         <SelectValue placeholder={`Vælg ${singular.toLowerCase()}`} />
       </SelectTrigger>
       <SelectContent>
