@@ -1,15 +1,12 @@
-import React from "react"; // Importerer React biblioteket, da dette er en React komponent.
+import React from "react";
 
-// Dette er en funktionel React-komponent kaldet StepIndicator.
-// Den tager tre 'props' (egenskaber) som input:
+// tre 'props' (egenskaber) som input:
 // - currentStep: Det nuværende trin i processen (f.eks. 1 for det første trin, 2 for det andet).
 // - totalSteps: Det samlede antal trin i processen.
 // - stepNames: En valgfri array af strenge, der indeholder navne for hvert trin (f.eks. ["Oplysninger", "Bekræftelse", "Betaling"]).
 const StepIndicator = ({ currentStep, totalSteps, stepNames }) => {
   return (
     // 1. Hovedcontainer for hele trinindikatoren.
-    // Dette <div> element fungerer som en flex-container, der centrerer dens indhold vandret og lodret.
-    // 'my-8' giver margin top og bund for visuel afstand.
     // role="navigation": Dette er en ARIA-attribut (Accessible Rich Internet Applications).
     // Den fortæller skærmlæsere, at dette element er en navigationskomponent, hvilket hjælper brugeren med at forstå sidens struktur.
     // aria-label="Trin i proces": En anden ARIA-attribut. Den giver en mere beskrivende label (navn) til navigationskomponenten,
@@ -22,16 +19,13 @@ const StepIndicator = ({ currentStep, totalSteps, stepNames }) => {
       {/* 2. Loop gennem hvert trin for at rendere cirkler og forbindelseslinjer.
           Array.from({ length: totalSteps }): Opretter en array med længden af 'totalSteps'.
           For eksempel, hvis totalSteps er 3, skaber den [undefined, undefined, undefined].
-          .map((_, index) => ...): Vi itererer over denne array.
+          .map((_, index) => ...): itererer over denne array.
           '_' (underscore) betyder, at vi ikke bruger selve elementets værdi, kun dets 'index' (0, 1, 2...).
-          'React.Fragment key={index}': Vi bruger React.Fragment, fordi vi vil returnere to elementer (cirklen og linjen)
+          'React.Fragment key={index}': bruger React.Fragment, fordi jeg vil returnere to elementer (cirklen og linjen)
           for hvert trin, og de skal have en 'key' når de er i en liste. Fragmentet renderes ikke som et HTML-element.
       */}
       {Array.from({ length: totalSteps }).map((_, index) => (
         <React.Fragment key={index}>
-          {/* 3. Container for den enkelte trin-cirkel og dens navn. */}
-          {/* 'flex flex-col items-center mx-2': Arrangerer indholdet (cirkel og tekst) i en kolonne, centrerer det,
-              og giver margin til venstre og højre. */}
           <div className={`flex flex-col items-center mx-2`}>
             {/* 4. Selve cirklen for hvert trin (f.eks. "1", "2", "3"). */}
             {/* Dynamiske klasser baseret på trin-status: */}
@@ -60,7 +54,7 @@ const StepIndicator = ({ currentStep, totalSteps, stepNames }) => {
                 stepNames && stepNames[index] ? stepNames[index] : ""
               }`}
             >
-              {index + 1}{" "}
+              {index + 1}
               {/* Viser trinnummeret inde i cirklen (f.eks. "1", "2"). */}
             </div>
             {/* 5. Trinnavn (teksten under cirklen). */}
@@ -75,7 +69,7 @@ const StepIndicator = ({ currentStep, totalSteps, stepNames }) => {
                       : "text-gray-600" // Ellers er teksten grå.
                   }`}
               >
-                {stepNames[index]}{" "}
+                {stepNames[index]}
                 {/* Viser navnet på trinnet (f.eks. "Oplysninger"). */}
               </p>
             )}

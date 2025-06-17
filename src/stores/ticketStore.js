@@ -1,8 +1,7 @@
 // 'create' er funktionen, der bruges til at oprette en ny Zustand store.
 import { create } from "zustand";
 
-// Opretter din Zustand store. Vi kalder den 'useCartStore', fordi den vil blive brugt som et React hook i dine komponenter.
-// 'create' tager en funktion som argument. Denne funktion definerer din stores 'state' (data) og 'actions' (måder at ændre data på).
+// 'create' tager en funktion som argument. Denne funktion definerer stores 'state' (data) og 'actions' (måder at ændre data på).
 // 'set' er en funktion, der bruges til at opdatere din stores state.
 // 'get' er en funktion, der bruges til at læse den nuværende state indenfor en action (hvis du skal bruge den til at beregne næste state).
 const useCartStore = create((set, get) => ({
@@ -12,12 +11,12 @@ const useCartStore = create((set, get) => ({
   // Hvert element i denne array vil sandsynligvis være et event-objekt med billettal osv.
   items: [],
 
-  // --- ACTIONS (De handlinger, du kan udføre på dit lager for at ændre state) ---
+  // --- ACTIONS (De handlinger, der kan udføres på lageret for at ændre state) ---
 
   // setEventInCart: En funktion til at tilføje et event til kurven eller opdatere mængden, hvis det allerede er der.
   // Den modtager 'eventDetails' som et objekt, der indeholder information om eventet og den ønskede mængde.
   setEventInCart: (eventDetails) =>
-    // 'set' bruges til at opdatere state. Vi sender en funktion til 'set',
+    // 'set' bruges til at opdatere state. Sender en funktion til 'set',
     // som modtager den 'state', der er LIGE NU ('state' her refererer til den aktuelle Zustand store state).
     set((state) => {
       // VIGTIGT: Sikkerhed mod datafejl. Sørg for at 'totalTickets' og 'bookedTickets' er TAL.
@@ -31,22 +30,14 @@ const useCartStore = create((set, get) => ({
       // Validerer den ønskede 'quantity' (mængde). Sikrer, at den mindst er 1, hvis den er 0 eller null/undefined.
       let validatedQuantity = Math.max(1, eventDetails.quantity || 1);
 
-      // **NY LOGIK HER: VIGTIGT for at forhindre oversalg!**
       // Hvis brugeren forsøger at tilføje flere billetter, end der er tilgængelige,
       // så justerer vi 'validatedQuantity' ned til det maksimale antal tilgængelige billetter.
       if (validatedQuantity > availableTickets) {
-        // En advarsel i konsollen, hvis dette sker. Godt til debugging.
-        console.warn(
-          `[ticketStore] Forsøgte at sætte ${validatedQuantity} billetter, men kun ${availableTickets} er tilgængelige. Justerer tilgængelige billetter.`
-        );
         validatedQuantity = availableTickets; // Sæt mængden til det maksimale tilgængelige.
       }
 
       // Håndter scenariet, hvor eventet er helt udsolgt (0 eller færre billetter tilgængelige).
       if (availableTickets <= 0) {
-        console.warn(
-          `[ticketStore] Eventet er udsolgt, kan ikke tilføje billetter.`
-        );
         // Hvis udsolgt, tøm kurven for dette event (eller generelt for at forhindre tilføjelse).
         // Dette 'return { items: [] }' vil faktisk tømme HELE kurven, hvis du forsøger at tilføje et udsolgt event.
         // Hvis du kun vil forhindre tilføjelsen af det SPECIFIKKE udsolgte event, men beholde andre i kurven,
@@ -97,8 +88,8 @@ const useCartStore = create((set, get) => ({
       }
 
       // Returnerer et NYT state-objekt for Zustand.
-      // VIGTIGT: Du skal ALTID returnere et nyt objekt fra 'set'-funktionen for at React/Zustand kan registrere en ændring.
-      // Vi opdaterer kun 'items' prop'en i vores state.
+      // VIGTIGT: skal ALTID returnere et nyt objekt fra 'set'-funktionen for at React/Zustand kan registrere en ændring.
+      // opdaterer kun 'items' prop'en i state.
       return { items: updatedItems };
     }),
 

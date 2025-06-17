@@ -1,60 +1,103 @@
-import KuratorForm from "@/components/kurator_create_edit/KuratorForm";
+// Denne fil definerer siden for at oprette eller redigere en begivenhed.
+// Den er en "Server Komponent" (Standard i Next.js App Router, ingen "use client" direkive).
+// Det betyder, at al JavaScript-koden her (især datahentning med 'await')
+// kører på serveren, før siden sendes som statisk HTML til browseren.
+// Dette giver fordele som hurtigere indlæsning, bedre SEO og sikkerhed.
+
+import KuratorForm from "@/components/kurator_create_edit/KuratorForm"; // Importerer formularkomponenten til at oprette/redigere events.
+// Importerer forskellige funktioner fra din API-biblioteksfil ('@/lib/api').
+// Disse funktioner er designet til at hente data fra din backend eller en ekstern API.
 import {
-  getEvent,
-  getEventId,
-  getEventLocations,
-  getSMKImg,
-  getSMKFilterCat,
-  getArtworkByEventID,
+  getEvent, // Henter en liste over alle events.
+  getEventId, // Henter detaljer for et specifikt event baseret på ID.
+  getEventLocations, // Henter en liste over alle event-lokationer.
+  getSMKImg, // Henter billeder fra SMK (Statens Museum for Kunst) API.
+  getSMKFilterCat, // Henter filterkategorier for SMK billeder (f.eks. typer af kunstværker).
+  getArtworkByEventID, // Henter detaljer for et specifikt kunstværk.
 } from "@/lib/api";
 
+// Hovedkomponenten for siden til at oprette/redigere et event.
+// Fordi dette er en Server Komponent, er den defineret som en 'async' funktion.
+// Den modtager 'searchParams' som en prop, som giver adgang til URL-query-parametre.
+// F.eks. hvis URL'en er '/create-edit-event?eventId=123', vil searchParams.eventId være '123'.
 export default async function CreateEditEventPage({ searchParams }) {
-  const initialImagesData = await getSMKImg(); // Henter alle SMK billeder
-  const images = initialImagesData.items || []; // Sikrer, at 'images' er et array
+  // 1. Datahentning: Henter nødvendige data fra API'er på serveren.
 
-  const events = await getEvent(); // Henter alle events
-  const locations = await getEventLocations(); // Henter lokationer
-  const { eventId } = await searchParams; // Fanger eventId fra URL'en for redigering
-  let prevData = null;
-  let prevSelectedArtworkDetails = [];
+  // Henter alle billeder fra SMK API. Dette er data, der potentielt kan bruges i formularen
+  // til at vælge billeder til et event.
+  const initialImagesData = await getSMKImg();
+  // Sikrer, at 'images' altid er et array, selvom 'initialImagesData.items' skulle være null/undefined.
+  const images = initialImagesData.items || [];
 
+  // Henter alle eksisterende events. Dette kunne bruges til validering eller referencer.
+  const events = await getEvent();
+  // Henter alle tilgængelige lokationer for events. Dette bruges sandsynligvis til en dropdown i formularen.
+  const locations = await getEventLocations();
+
+  // 2. Bestemmer om siden er i "opret" eller "rediger" tilstand.
+
+  // Destrukturerer 'eventId' fra URL'ens query-parametre.
+  // Hvis URL'en er '/create-edit-event?eventId=XYZ', vil 'eventId' indeholde 'XYZ'.
+  // Hvis 'eventId' ikke er til stede, er dette en "opret" operation.
+  const { eventId } = searchParams; // searchParams er allerede et objekt, behøver ikke 'await'.
+  let prevData = null; // Variabel til at holde eksisterende eventdata, hvis vi er i redigeringstilstand.
+  let prevSelectedArtworkDetails = []; // Variabel til at holde detaljer om kunstværker, der allerede er knyttet til eventet.
+
+  // 3. Logik for redigeringstilstand.
+  // Hvis 'eventId' er til stede, betyder det, at vi skal redigere et eksisterende event.
   if (eventId) {
-    prevData = await getEventId(eventId); // Henter eksisterende eventdata
-    // <-- NY LOGIK: Hent detaljer for forvalgte billeder, hvis eventId findes
+    // Henter alle detaljer for det eksisterende event fra API'en.
+    prevData = await getEventId(eventId);
+
+    // <-- NY LOGIK: Henter detaljer for de kunstværker, der allerede er tilknyttet dette event.
+    // Denne del er vigtig for at forudfylde formularen med de korrekte billeder i redigeringstilstand.
     if (prevData && prevData.artworkIds && prevData.artworkIds.length > 0) {
-      // Brug Promise.all for parallel hentning for bedre performance
+      // Brug Promise.all for at hente detaljer for alle kunstværker parallelt.
+      // Dette er meget mere effektivt end at hente dem en efter en (sekventielt).
       prevSelectedArtworkDetails = await Promise.all(
         prevData.artworkIds.map(async (objectNumber) => {
           try {
+            // Forsøger at hente detaljer for det specifikke kunstværk.
             return await getArtworkByEventID(objectNumber);
           } catch (error) {
+            // Fejlhåndtering: Hvis hentningen af et kunstværk fejler.
             console.error(
               `Fejl ved hentning af billeddetaljer for ${objectNumber}:`,
               error
             );
-            return null; // Returner null ved fejl, filtreres senere
+            return null; // Returnerer null, så vi kan filtrere det fra senere.
           }
         })
       );
-      // Filtrer eventuelle null-værdier fra, hvis en hentning fejlede
+      // Filtrer eventuelle null-værdier fra (dvs. de kunstværker, hvis hentning fejlede).
       prevSelectedArtworkDetails = prevSelectedArtworkDetails.filter(Boolean);
     }
   }
 
+  // Henter filterkategorier for SMK billederne. Bruges til at filtrere billedvalget i formularen.
   const filterCategories = await getSMKFilterCat();
 
+  // 4. Returnerer JSX'en for siden.
+  // 'main' elementet indeholder sidens primære indhold.
   return (
     <main>
+      {/* Overskrift for siden. Tekst- og styling-klasser fra Tailwind CSS. */}
       <h1 className="text-blue-500 justify-self-center p-4">
         Opret/rediger begivenhed
       </h1>
+      {/* KuratorForm-komponenten: Dette er selve formularen.
+          Den modtager alle de data, der er hentet på serveren, som props.
+          Fordi KuratorForm sandsynligvis indeholder interaktive elementer (inputfelter, billedvælgere),
+          vil det typisk være en "Client Component" (markeret med "use client" inde i dens egen fil).
+          Server Komponenter (denne fil) kan problemfrit sende data til Client Komponenter via props.
+      */}
       <KuratorForm
-        images={images}
-        events={events}
-        locations={locations}
-        prevData={prevData}
-        filterCategories={filterCategories}
-        prevSelectedArtworkDetails={prevSelectedArtworkDetails}
+        images={images} // Alle SMK billeder til at vælge imellem.
+        events={events} // Eksisterende events (muligvis til validering).
+        locations={locations} // Tilgængelige event-lokationer.
+        prevData={prevData} // Eksisterende eventdata (hvis vi redigerer).
+        filterCategories={filterCategories} // Kategorier til at filtrere SMK billeder.
+        prevSelectedArtworkDetails={prevSelectedArtworkDetails} // Detaljer om forvalgte kunstværker, hvis redigering.
       />
     </main>
   );
