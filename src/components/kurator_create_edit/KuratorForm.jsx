@@ -1,202 +1,172 @@
-// Direktiv, der fortæller Next.js, at dette er en "Client Component".
-// Det betyder, at koden her (JavaScript, state, effekter, event handlers)
-// kører i brugerens browser. Dette er nødvendigt for interaktivitet.
-"use client";
+"use client"; // Marker denne komponent som en Client Component, nødvendigt for at bruge hooks som useState og useForm.
 
-// Importerer ikoner fra 'react-icons' biblioteket.
+// Importer nødvendige ikoner fra react-icons
 import { FaArrowLeft, FaArrowRight } from "react-icons/fa";
 
-// Importerer React Hooks for at håndtere state, overgange og referencer til DOM-elementer.
+// Importer React hooks til tilstandsstyring, overgange og referencer
 import { useState, useTransition, useRef } from "react";
-// Importerer 'useForm' fra 'react-hook-form' biblioteket til formularhåndtering.
+// Importer useForm fra react-hook-form til formstyring og validering
 import { useForm } from "react-hook-form";
-// Importerer Next.js' optimerede Image komponent.
+// Importer Image-komponenten fra Next.js til optimeret billedhåndtering
 import Image from "next/image";
-// Importerer 'useRouter' hook fra Next.js for programmatisk navigation.
+// Importer useRouter fra Next.js til programmatisk navigation
 import { useRouter } from "next/navigation";
-// Importerer 'useActionState' hook fra React (til eksperimentel brug i React 19 / Canary).
-// Dette hook bruges til at håndtere state og returnere resultater fra server actions.
+// Importer useActionState (formodentlig en brugerdefineret hook eller en hook fra et bibliotek til styring af asynkrone handlinger)
 import { useActionState } from "react";
 
-// Importerer Shadcn UI komponenter. Disse er præ-designede, tilgængelige
-// og genanvendelige UI-komponenter til inputfelter, dropdowns, m.m.
-import { Input } from "@/components/ui/input";
-import { Textarea } from "@/components/ui/textarea";
+// Importer Shadcn UI-komponenter til opbygning af formularen
+import { Input } from "@/components/ui/input"; // Inputfeltkomponent
+import { Textarea } from "@/components/ui/textarea"; // Tekstområdekomponent
 import {
-  Form, // Hovedkomponent for at omvikle din formular for React Hook Form integration.
-  FormControl, // Wrapper for inputfelter.
-  FormDescription, // Valgfri tekst under et inputfelt.
-  FormField, // Håndterer binding af inputfelter til formularstate og validering.
-  FormItem, // Hovedcontainer for et enkelt formularfelt.
-  FormLabel, // Label for inputfelt.
-  FormMessage, // Viser valideringsfejlmeddelelser.
-} from "@/components/ui/form";
+  Form,
+  FormControl,
+  FormDescription,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "@/components/ui/form"; // Komponenter til opbygning af formularer med react-hook-form
 import {
-  Select, // Dropdown komponent.
-  SelectContent, // Indhold for dropdown (liste af items).
-  SelectItem, // Individuelt element i dropdown.
-  SelectTrigger, // Knap der åbner dropdown.
-  SelectValue, // Viser den aktuelt valgte værdi.
-} from "@/components/ui/select";
-import { Label } from "@/components/ui/label"; // Generisk label komponent.
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select"; // Komponenter til valg-/dropdown-menuer
+import { Label } from "@/components/ui/label"; // Label-komponent
 
-// Lokale komponenter/assets
-import Placeholder from "../../app/assets/img/placeholder.png"; // Standard billede, hvis et andet ikke kan indlæses.
+// Lokale komponenter/aktiver
+import Placeholder from "../../app/assets/img/placeholder.png"; // Placeholder-billede for kunstværker
 
-// Importér filter-relaterede komponenter og actions
-import { filterData } from "@/components/global/filter/actions"; // Server action til filtrering af data.
-import Filter from "@/components/global/filter/Filter"; // Filter UI komponent.
-import CustomButton from "../global/CustomButton"; // Brugerdefineret knap komponent.
+// Importer filter-relaterede komponenter og serverhandlinger
+import { filterData } from "@/components/global/filter/actions"; // Serverhandling til filtrering af data
+import Filter from "@/components/global/filter/Filter"; // Filter UI-komponent
+import CustomButton from "../global/CustomButton"; // Brugerdefineret knapkomponent
 
-// Importér de ændrede API-kald for at oprette og opdatere events.
+// Importer de ændrede API-kald
 import { createEvent, updateEvent } from "@/lib/api";
 
-// KuratorForm er en Client Component, der tager flere props.
-// Disse props er leveret af den overordnede Server Component (CreateEditEventPage).
+// Definer KuratorForm funktionskomponenten
 const KuratorForm = ({
-  images: initialImages, // Alle tilgængelige billeder fra SMK API.
-  locations, // Liste over event lokationer.
-  prevData, // Eksisterende event data, hvis vi er i redigeringstilstand.
-  filterCategories, // Kategorier til at filtrere SMK billeder.
-  prevSelectedArtworkDetails, // Detaljer om billeder, der allerede er valgt for eventet.
+  images: initialImages, // Indledende liste over billeder (kunstværker)
+  locations, // Liste over tilgængelige lokationer
+  prevData, // Tidligere begivenhedsdata (til redigering af en eksisterende begivenhed)
+  filterCategories, // Kategorier tilgængelige for filtrering af billeder
+  prevSelectedArtworkDetails, // Detaljer om tidligere valgte kunstværker (til redigering)
 }) => {
-  // Initialiserer 'react-hook-form' til formularhåndtering.
-  // 'defaultValues' sætter de oprindelige værdier for formularfelterne.
-  // Hvis 'prevData' eksisterer (redigeringstilstand), bruges dens værdier; ellers tomme strenge.
+  // Initialiser react-hook-form til formstyring
   const form = useForm({
     defaultValues: {
-      title: prevData?.title || "", // Eventtitel.
-      date: prevData?.date || "", // Eventdato.
-      locationId: prevData?.locationId?.toString() || "", // Lokations-ID (konverteres til string, da select forventer string).
-      description: prevData?.description || "", // Eventbeskrivelse.
+      title: prevData?.title || "", // Sæt standardtitel fra prevData eller tom streng
+      date: prevData?.date || "", // Sæt standarddato fra prevData eller tom streng
+      locationId: prevData?.locationId?.toString() || "", // Sæt standard lokations-ID fra prevData eller tom streng
+      description: prevData?.description || "", // Sæt standardbeskrivelse fra prevData eller tom streng
     },
   });
 
-  // Destrukturerer metoder fra 'form' objektet for nem adgang.
+  // Dekonstruer metoder fra form-objektet
   const { handleSubmit, control, getValues } = form;
 
-  // State til at holde ID'er (object_number) for de billeder, brugeren har valgt.
-  // Initialiseres med tidligere valgte billeder, hvis i redigeringstilstand.
+  // Tilstand til at gemme objektnumrene for valgte billeder
   const [selectedImages, setSelectedImages] = useState(
-    prevData?.artworkIds || []
+    prevData?.artworkIds || [] // Initialiser med kunstværks-ID'er fra prevData eller et tomt array
   );
 
-  // State til at holde *detaljerede objekter* for de billeder, brugeren har valgt.
-  // Dette er nyttigt for at vise thumbnail, titel mv. i sektionen for valgte billeder.
-  // Initialiseres med data fra 'prevSelectedArtworkDetails' (leveret af Server Komponent).
+  // Tilstand til at gemme de fulde detaljer for valgte kunstværker
   const [selectedArtworkDetails, setSelectedArtworkDetails] = useState(
-    prevSelectedArtworkDetails || []
+    prevSelectedArtworkDetails || [] // Initialiser med prevSelectedArtworkDetails eller et tomt array
   );
 
-  // 'useActionState' Hook (React 19 / Canary):
-  // Bruges til at integrere en "Server Action" (filterData) med Client Components state.
-  // - filterData: Den server action, der skal kaldes.
-  // - { active: [], data: initialImages || [], totalFound: initialImages?.length || 0 }: Initial state.
-  // - [filterState, formAction, isFiltering]:
-  //   - filterState: Den nuværende state efter at action er kørt.
-  //   - formAction: En funktion, der kan sendes til en form's 'action' prop, eller kaldes direkte.
-  //   - isFiltering: Boolean, der er sand, mens action kører.
+  // useActionState til styring af asynkron filtrering af data
   const [filterState, formAction, isFiltering] = useActionState(filterData, {
-    active: [], // Aktive filtre (ikke brugt direkte her, men returneres af server action).
-    data: initialImages || [], // De filtrerede billeddata.
-    totalFound: initialImages?.length || 0, // Antal fundne billeder.
+    active: [], // Aktive filtre
+    data: initialImages || [], // Filtrerede data (oprindeligt alle billeder)
+    totalFound: initialImages?.length || 0, // Samlet antal fundne billeder
   });
 
-  // 'useTransition' Hook (React):
-  // Bruges til at markere state-opdateringer som "ikke-blokerende overgange".
-  // Dette holder UI'et responsivt under potentielt lange opdateringer (som datafiltrering).
-  // - isPending: Boolean, sand når en overgang er i gang.
-  // - startTransition: Funktion til at omvikle state-opdateringer, der skal være overgange.
+  // useTransition til styring af afventende tilstande under UI-opdateringer
   const [isPending, startTransition] = useTransition();
 
-  // Billeder, der aktuelt skal vises i galleriet, baseret på filterState.
+  // Billeder, der aktuelt vises i galleriet baseret på filterState
   const displayedImages = filterState.data;
 
-  // States til at håndtere fejl- og succesmeddelelser, der vises til brugeren.
+  // Tilstand til visning af fejl- og succesmeddelelser til brugeren
   const [errorMessage, setErrorMessage] = useState(null);
   const [successMessage, setSuccessMessage] = useState(null);
 
-  // useRef Hook:
-  // Bruger en ref til at henvise til HTML <form> elementet.
-  // Dette bruges til at scrolle siden til toppen efter submit (både succes og fejl).
+  // Reference til formularelementet for at kunne scrolle til det
   const formRef = useRef(null);
 
   // PAGINERING STATES OG LOGIK
-  const [currentPage, setCurrentPage] = useState(1); // Nuværende side i billedgalleriet.
-  const imagesPerPage = 15; // Antal billeder, der skal vises per side.
+  const [currentPage, setCurrentPage] = useState(1); // Aktuel side i galleriet
+  const imagesPerPage = 15; // Antal billeder, der skal vises per side
 
-  // Filtrerer de *allerede valgte* billeder fra listen over de billeder, der skal vises.
-  // Dette forhindrer, at et billede vises to gange (i valgte og i galleriet).
+  // Filtrer først valgte billeder fra displayedImages, så de ikke vises dobbelt i galleriet
   const filteredDisplayedImages = displayedImages.filter(
     (img) => !selectedImages.includes(img.object_number)
   );
 
-  // Beregner start- og slutindeks for billederne på den aktuelle side.
+  // Beregn billeder til den aktuelle side baseret på paginering
   const indexOfLastImage = currentPage * imagesPerPage;
   const indexOfFirstImage = indexOfLastImage - imagesPerPage;
-  // Udtrækker de billeder, der skal vises på den aktuelle side.
   const currentImagesForGallery = filteredDisplayedImages.slice(
     indexOfFirstImage,
     indexOfLastImage
   );
 
-  // Beregner det samlede antal sider for paginering.
+  // Beregn det samlede antal sider for paginering
   const totalPages = Math.ceil(filteredDisplayedImages.length / imagesPerPage);
 
-  // Funktion til at ændre den aktuelle side.
+  // Funktion til at ændre den aktuelle side
   const paginate = (pageNumber) => setCurrentPage(pageNumber);
 
-  // Initialiserer Next.js' router for navigation.
+  // Initialiser routeren fra Next.js til navigation
   const router = useRouter();
 
-  // Event handler for når brugeren klikker på et billede i galleriet eller i valgte billeder.
+  // Håndterer klik på et billede i galleriet (til at vælge/afvælge det)
   const handleImageClick = (img) => {
-    // Opdaterer 'selectedImages' state.
     setSelectedImages((prevSelectedImages) => {
-      // Tjekker om billedet allerede er valgt.
+      // Kontrollerer om billedet allerede er valgt
       const isCurrentlySelected = prevSelectedImages.includes(
         img.object_number
       );
 
       let newSelectedImageIds;
       if (isCurrentlySelected) {
-        // Hvis billedet allerede er valgt, fjerner vi det.
+        // Hvis billedet allerede er valgt, fjern det fra listen
         newSelectedImageIds = prevSelectedImages.filter(
           (item) => item !== img.object_number
         );
       } else {
-        // Hvis billedet ikke er valgt, skal vi tjekke lokationens maksimale antal billeder.
-        // Henter den valgte lokation fra formularen (via react-hook-form's getValues).
+        // Hvis billedet ikke er valgt, tilføj det til listen
         const selectedLocation = locations.find(
-          (loc) => loc.id.toString() === getValues("locationId")
+          (loc) => loc.id.toString() === getValues("locationId") // Find den valgte lokation baseret på formulardata
         );
 
-        // Validering: Tjekker om et maksimum antal billeder er defineret for lokationen,
-        // og om det nuværende antal valgte billeder overskrider dette maksimum.
+        // Validerer om antallet af valgte billeder overstiger lokationens maksimale antal
         if (
           selectedLocation &&
           selectedLocation.maxArtworks &&
           prevSelectedImages.length >= selectedLocation.maxArtworks
         ) {
-          // Viser en alert (da det er en klient-side validering).
+          // Beholder alert her, da det er en frontend-validering for maksimale billeder
           alert(
             `Du kan kun vælge op til ${selectedLocation.maxArtworks} billeder for denne lokation.`
           );
-          return prevSelectedImages; // Returnerer den uændrede liste.
+          return prevSelectedImages; // Returner den tidligere liste af valgte billeder, da intet blev tilføjet
         }
-        // Tilføjer det nye billedes object_number til listen over valgte billeder.
-        newSelectedImageIds = [...prevSelectedImages, img.object_number];
+        newSelectedImageIds = [...prevSelectedImages, img.object_number]; // Tilføj billedets objektnummer
       }
 
-      // Opdaterer 'selectedArtworkDetails' state baseret på 'selectedImages' ændring.
+      // Opdater de fulde detaljer for valgte kunstværker
       setSelectedArtworkDetails((prevDetails) => {
         if (isCurrentlySelected) {
-          // Hvis billedet er blevet fravalgt, fjern dets detaljer.
+          // Hvis billedet blev afvalgt, fjern dets detaljer
           return prevDetails.filter(
             (detail) => detail.object_number !== img.object_number
           );
         } else {
-          // Hvis billedet er blevet valgt, tilføj dets detaljer, men kun hvis det ikke allerede er der.
+          // Hvis billedet blev valgt, tilføj dets detaljer, hvis de ikke allerede er der
           if (
             !prevDetails.some(
               (detail) => detail.object_number === img.object_number
@@ -204,79 +174,75 @@ const KuratorForm = ({
           ) {
             return [...prevDetails, img];
           }
-          return prevDetails; // Returner uændret, hvis det allerede er der.
+          return prevDetails; // Returner uændrede detaljer, hvis billedet allerede var i listen
         }
       });
 
-      return newSelectedImageIds; // Returner den opdaterede liste af billed-ID'er.
+      return newSelectedImageIds; // Returner den opdaterede liste af valgte billeders ID'er
     });
   };
 
-  // Event handler for, når formularen sendes.
+  // Håndterer formularindsendelse
   const onSubmit = async (data) => {
-    // Nulstil tidligere fejl- og succesmeddelelser.
+    // Nulstil beskeder før et nyt submit-forsøg
     setErrorMessage(null);
     setSuccessMessage(null);
 
-    // Konstruer payload'en (data) der skal sendes til API'en.
+    // Opretter payload til API-kaldet
     const payload = {
       title: data.title,
       date: data.date,
       locationId: data.locationId,
       description: data.description,
-      artworkIds: selectedImages, // De valgte billed-ID'er.
+      artworkIds: selectedImages, // Inkluderer de valgte kunstværks-ID'er
     };
+
+    console.log("PAYLOAD: ", payload); // Log payload for debugging
 
     try {
       let response;
-      // Bestem om der skal oprettes eller opdateres baseret på om 'prevData' eksisterer.
       if (prevData && prevData.id) {
-        // Opdaterer et eksisterende event.
+        // Hvis prevData eksisterer og har et ID, opdateres en eksisterende begivenhed
         response = await updateEvent(prevData.id, payload);
       } else {
-        // Opretter et nyt event.
+        // Ellers oprettes en ny begivenhed
         response = await createEvent(payload);
       }
 
-      // Tjekker om API-kaldet var succesfuldt (HTTP status 2xx).
-      if (response.ok) {
-        const result = await response.json(); // Parser svaret fra API'en.
+      console.log("TEST RESPONSE: ", response); // Log API-svaret
 
-        // Sæt succesmeddelelse.
+      if (response) {
+        // Hvis svaret er succesfuldt
         setSuccessMessage(
-          `Eventet er ${prevData ? "opdateret" : "oprettet"} succesfuldt!`
+          `Eventet er ${prevData ? "opdateret" : "oprettet"} succesfuldt!` // Vis succesmeddelelse
         );
-
-        // SCROLL OG REDIRECTION LOGIK:
-        // Scroll til toppen af formularen for at vise succesmeddelelsen.
+        // Scroll til toppen af formularen ved succes
         if (formRef.current) {
           formRef.current.scrollIntoView({
-            behavior: "smooth", // Jævn scroll-animation.
-            block: "start", // Justerer toppen af elementet til toppen af visningsporten.
+            behavior: "smooth",
+            block: "start",
           });
         }
-        // Forsinket redirection til dashboard. Giver brugeren tid til at læse succesmeddelelsen.
+        // Forsink omdirigering til dashboardet med 3 sekunder
         setTimeout(() => {
           router.push("/dashboard");
-        }, 3000); // 3 sekunders forsinkelse.
+        }, 3000);
       } else {
-        // Hvis API-kaldet ikke var succesfuldt, håndter fejl.
-        const errorData = await response.json(); // Parser fejlsvaret.
-        console.error("Fejl ved event handling via API-rute:", errorData); // Log fejl til konsol.
-
-        // Konstruer fejlmeddelelse til brugeren.
+        // Hvis svaret indikerer en fejl
+        const errorData = await response.json(); // Forsøg at parse fejlmeddelelsen fra JSON
+        console.error("Fejl ved event handling via API-rute:", errorData);
         let message = "Ukendt fejl.";
+        // Tilpassede fejlmeddelelser baseret på API-svaret
         if (
           errorData.message &&
           errorData.message.includes("conflict: another event already exists")
         ) {
-          message = "Der findes allerede et event på denne dato og lokation."; // Specifik fejlmeddelelse.
+          message = "Der findes allerede et event på denne dato og lokation."; // Kortere tekst
         } else if (errorData.message) {
-          message = errorData.message; // Brug API'ens fejlmeddelelse, hvis den findes.
+          message = errorData.message;
         }
-        setErrorMessage(`Fejl: ${message}`); // Sæt fejlmeddelelse.
-
-        // Scroll til toppen af formularen ved fejl for at vise fejlmeddelelsen.
+        setErrorMessage(`Fejl: ${message}`); // Vis fejlmeddelelse
+        // Scroll til toppen af formularen ved fejl
         if (formRef.current) {
           formRef.current.scrollIntoView({
             behavior: "smooth",
@@ -285,50 +251,50 @@ const KuratorForm = ({
         }
       }
     } catch (error) {
-      // Håndterer netværksfejl (f.eks. ingen internetforbindelse).
+      // Håndterer netværksfejl eller andre uventede fejl
       console.error("Netværksfejl ved submit af event til API-rute:", error);
       setErrorMessage(
-        "Netværksfejl: Kunne ikke oprette/opdatere event. Tjek din internetforbindelse."
+        "Netværksfejl: Kunne ikke oprette/opdatere event. Tjek din internetforbindelse." // Kortere tekst
       );
+      // Scroll til toppen af formularen ved fejl
       if (formRef.current) {
         formRef.current.scrollIntoView({ behavior: "smooth", block: "start" });
       }
     }
   };
 
-  // Event handler for når en filterkategori vælges.
+  // Håndterer valg af filterkategorier
   const handleFilterSelection = (value, name) => {
     let newFilters = [];
     if (value !== "all") {
-      // Hvis "all" ikke er valgt, opbyg filterstrengen (f.eks. "category:maleri").
+      // Hvis et specifikt filter er valgt, opret en ny filterstreng
       newFilters = [`${name}:${value}`];
     }
-    // 'startTransition' omvikler kaldet til server action 'formAction'.
-    // Dette gør filterprocessen ikke-blokerende for UI'et.
+    // Start en overgang for at opdatere filteret asynkront
     startTransition(() => {
-      formAction(newFilters); // Kalder server action for at filtrere billeder.
-      setCurrentPage(1); // Nulstil pagineringen til side 1, når filtre ændres.
+      formAction(newFilters); // Kalder serverhandlingen med de nye filtre
+      setCurrentPage(1); // Nulstil til side 1, når filteret ændres
     });
   };
 
   return (
-    // 'Form' komponent fra Shadcn UI, wrapper for at integrere med React Hook Form.
+    // Form-kontekst fra react-hook-form
     <Form {...form}>
       <form
-        onSubmit={handleSubmit(onSubmit)} // Håndterer formularsubmit, kalder 'onSubmit' funktionen.
-        className="space-y-8 p-4" // Styling med Tailwind CSS.
-        ref={formRef} // Tilknytter useRef til formularen for at kunne scrolle til den.
+        onSubmit={handleSubmit(onSubmit)} // Tilknyt handleSubmit til onSubmit-funktionen
+        className="space-y-8 p-4" // Styling for formularen
+        ref={formRef} // Tilknyt referencen til formularen
       >
-        {/* Vis fejlmeddelelse, hvis 'errorMessage' state er sat. */}
+        {/* Viser fejlmeddelelse her med Tailwind CSS */}
         {errorMessage && (
           <div
             className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative"
-            role="alert" // ARIA role for at markere som et alert-besked for tilgængelighed.
+            role="alert" // Tilgængelighedsrolle for alert
           >
             <span className="block sm:inline">{errorMessage}</span>
             <span
               className="absolute top-0 bottom-0 right-0 px-4 py-3 cursor-pointer"
-              onClick={() => setErrorMessage(null)} // Gør det muligt at lukke meddelelsen.
+              onClick={() => setErrorMessage(null)} // Tillader at lukke beskeden ved klik
             >
               {/* SVG for lukkeikon */}
               <svg
@@ -343,17 +309,17 @@ const KuratorForm = ({
             </span>
           </div>
         )}
-        {/* Vis succesmeddelelse, hvis 'successMessage' state er sat. */}
+        {/* Viser succesmeddelelse her med Tailwind CSS */}
         {successMessage && (
           <div
             className="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded relative"
-            role="alert"
+            role="alert" // Tilgængelighedsrolle for alert
           >
             <strong className="font-bold">Succes! </strong>
             <span className="block sm:inline">{successMessage}</span>
             <span
               className="absolute top-0 bottom-0 right-0 px-4 py-3 cursor-pointer"
-              onClick={() => setSuccessMessage(null)}
+              onClick={() => setSuccessMessage(null)} // Tillader at lukke beskeden ved klik
             >
               {/* SVG for lukkeikon */}
               <svg
@@ -368,12 +334,11 @@ const KuratorForm = ({
             </span>
           </div>
         )}
-        {/* Formularfelter (Titel, Dato, Lokation, Beskrivelse) */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-x-8 gap-y-4">
-          {/* FormField for Titel */}
+          {/* Formfelt for 'Titel' */}
           <FormField
-            control={control} // Fra useForm, forbinder feltet til formularens state.
-            name="title" // Navnet på feltet i formularen (f.eks. data.title).
+            control={control}
+            name="title"
             render={({ field }) => (
               <FormItem>
                 <FormLabel>Titel</FormLabel>
@@ -381,12 +346,12 @@ const KuratorForm = ({
                   <Input placeholder="Begivenhedens titel" {...field} />
                 </FormControl>
                 <FormDescription></FormDescription>{" "}
-                {/* Tom beskrivelse, kan udfyldes. */}
-                <FormMessage /> {/* Viser valideringsfejl her. */}
+                {/* Tom beskrivelse, kan udvides */}
+                <FormMessage /> {/* Viser valideringsfejlmeddelelser */}
               </FormItem>
             )}
           />
-          {/* FormField for Dato */}
+          {/* Formfelt for 'Dato' */}
           <FormField
             control={control}
             name="date"
@@ -394,15 +359,16 @@ const KuratorForm = ({
               <FormItem>
                 <FormLabel>Dato</FormLabel>
                 <FormControl>
+                  {/* Input type="date" for datovælger */}
                   <Input type="date" {...field} value={field.value || ""} />
-                  {/* Sørg for at 'value' er en string, selvom den er tom. */}
                 </FormControl>
-                <FormDescription></FormDescription>
-                <FormMessage />
+                <FormDescription></FormDescription>{" "}
+                {/* Tom beskrivelse, kan udvides */}
+                <FormMessage /> {/* Viser valideringsfejlmeddelelser */}
               </FormItem>
             )}
           />
-          {/* FormField for Lokation (Dropdown) */}
+          {/* Formfelt for 'Lokation' med Select-komponent */}
           <FormField
             control={control}
             name="locationId"
@@ -410,8 +376,8 @@ const KuratorForm = ({
               <FormItem>
                 <FormLabel>Lokation</FormLabel>
                 <Select
-                  onValueChange={field.onChange} // Opdaterer formularens state, når valg ændres.
-                  defaultValue={field.value} // Sætter standardværdien.
+                  onValueChange={field.onChange} // Opdater formfeltets værdi ved valg
+                  defaultValue={field.value} // Sæt standardværdi
                 >
                   <FormControl>
                     <SelectTrigger>
@@ -419,25 +385,25 @@ const KuratorForm = ({
                     </SelectTrigger>
                   </FormControl>
                   <SelectContent>
-                    {/* Mapper over lokationer for at skabe SelectItem for hver. */}
+                    {/* Mapper igennem lokationer for at oprette SelectItem for hver */}
                     {locations.map((location) => (
                       <SelectItem
                         key={location.id}
-                        value={location.id.toString()} // Værdien skal være en streng.
+                        value={location.id.toString()} // Værdien skal være en streng
                       >
-                        {location.name} (Max billeder: {location.maxArtworks}){" "}
-                        {/* Viser navn og max billeder. */}
+                        {location.name} (Max billeder: {location.maxArtworks})
                       </SelectItem>
                     ))}
                   </SelectContent>
                 </Select>
-                <FormDescription></FormDescription>
-                <FormMessage />
+                <FormDescription></FormDescription>{" "}
+                {/* Tom beskrivelse, kan udvides */}
+                <FormMessage /> {/* Viser valideringsfejlmeddelelser */}
               </FormItem>
             )}
           />
         </div>
-        {/* FormField for Beskrivelse */}
+        {/* Formfelt for 'Beskrivelse' */}
         <FormField
           control={control}
           name="description"
@@ -447,32 +413,36 @@ const KuratorForm = ({
               <FormControl>
                 <Textarea placeholder="Beskrivelse af eventet" {...field} />
               </FormControl>
-              <FormDescription></FormDescription>
-              <FormMessage />
+              <FormDescription></FormDescription>{" "}
+              {/* Tom beskrivelse, kan udvides */}
+              <FormMessage /> {/* Viser valideringsfejlmeddelelser */}
             </FormItem>
           )}
         />
-        {/* Valgte Billeder Sektion */}
+        {/* Valgte Billeder Sektion - JUSTERET GRID KLASSER OG SIZES HER */}
         <div className="space-y-4 border p-4 rounded-lg">
           <Label className="text-lg font-semibold">Valgte Billeder</Label>
-          {/* Betinget rendering: Hvis der er valgte billeder, vis dem. Ellers vis en besked. */}
           {selectedArtworkDetails.length > 0 ? (
+            // Hvis der er valgte billeder, vis dem i et responsivt grid
             <div className="grid grid-cols-5 sm:grid-cols-6 md:grid-cols-7 lg:grid-cols-8 xl:grid-cols-10 gap-4">
               {selectedArtworkDetails.map((img) => (
                 <div
-                  key={`selected-${img.object_number}`} // Unik nøgle for hvert valgt billede.
-                  onClick={() => handleImageClick(img)} // Gør billedet klikbart for at fjerne det.
-                  className="relative aspect-square overflow-hidden rounded-md cursor-pointer ring-4 ring-blue-500 group" // Stylingen indikerer "valgt".
+                  key={`selected-${img.object_number}`} // Unik nøgle for hvert element
+                  onClick={() => handleImageClick(img)} // Klik for at afvælge billedet
+                  className="relative aspect-square overflow-hidden rounded-md cursor-pointer ring-4 ring-blue-500 group" // Styling for valgte billeder
                 >
                   <Image
-                    src={img.image_thumbnail || img.image_native || Placeholder} // Fallback til placeholder.
-                    alt={img.titles?.[0]?.title || "Valgt billede"} // Billedets alt-tekst.
-                    fill // Fyld forælder-div'en.
-                    sizes="(max-width: 768px) 100px, (max-width: 1200px) 150px, 200px" // Responsive billedstørrelser.
-                    className="object-cover transition-transform duration-300 group-hover:scale-105 group-hover:brightness-50" // Hover-effekter.
+                    src={img.image_thumbnail || img.image_native || Placeholder} // Brug thumbnail, native billede eller placeholder
+                    alt={img.titles?.[0]?.title || "Valgt billede"} // Alternativ tekst for tilgængelighed
+                    fill // Fyld forældre-div'en
+                    sizes="(max-width: 768px) 100px, (max-width: 1200px) 150px, 200px" // Billedstørrelser for responsivitet
+                    className="object-cover transition-transform duration-300 group-hover:scale-105 group-hover:brightness-50" // Billede styling og hover-effekter
                   />
-                  {/* Overlays for visuel feedback, når billedet er valgt. */}
-                  <div className="absolute inset-0 bg-black/50 flex items-center justify-center pointer-events-none"></div>
+                  {/* Overlay med tjekmark for valgte billeder */}
+                  <div className="absolute inset-0 bg-black/50 flex items-center justify-center pointer-events-none">
+                    <span className="text-white text-2xl">✓</span>
+                  </div>
+                  {/* Overlay for titel ved hover */}
                   <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
                     <p className="text-white text-center text-xs px-2 break-words">
                       {img.titles?.[0]?.title || "Ukendt titel"}
@@ -482,6 +452,7 @@ const KuratorForm = ({
               ))}
             </div>
           ) : (
+            // Hvis ingen billeder er valgt, vis en meddelelse
             <p className="text-gray-500">Ingen billeder er valgt endnu.</p>
           )}
         </div>
@@ -491,37 +462,36 @@ const KuratorForm = ({
             Filtrer billeder fra SMK
           </Label>
           <div className="grid grid-cols-1 md:grid-cols-4 gap-x-8">
-            {/* Filter-kolonne */}
             <div className="md:col-span-1">
               {filterCategories && filterCategories.length > 0 ? (
-                // Sender filterkategorier og filterfunktionen til Filter-komponenten.
+                // Vis filterkomponenten, hvis der er filterkategorier
                 <Filter data={filterCategories} fn={handleFilterSelection} />
               ) : (
+                // Ellers vis en meddelelse
                 <p>Ingen filterkategorier fundet.</p>
               )}
             </div>
-            {/* Billedgalleri-kolonne */}
             <div className="md:col-span-3">
               <div className="grid grid-cols-3 sm:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-2">
-                {/* Betinget rendering af billeder, loading-status eller ingen billeder. */}
                 {currentImagesForGallery.length > 0 ? (
+                  // Vis billederne i galleriet, hvis der er nogen
                   currentImagesForGallery.map((img) => {
-                    // Tjekker om et billede allerede er valgt for at vise visuel feedback.
                     const isSelected = selectedImages.includes(
                       img.object_number
                     );
                     return (
                       <div
-                        key={img.object_number}
-                        onClick={() => handleImageClick(img)} // Gør billedet klikbart for at vælge/fravalgte.
-                        className={`relative aspect-square overflow-hidden rounded-md cursor-pointer group
+                        key={img.object_number} // Unik nøgle
+                        onClick={() => handleImageClick(img)} // Klik for at vælge/afvælge billedet
+                        className={`relative aspect-square overflow-hidden rounded-md cursor-pointer group // Tilføjet group-klasse
                           ${
-                            isSelected // Dynamisk styling baseret på valgstatus.
-                              ? "ring-4 ring-blue-500" // Blå ring hvis valgt.
-                              : "opacity-75 hover:opacity-100" // Let falmet, men lyser op ved hover, hvis ikke valgt.
+                            isSelected
+                              ? "ring-4 ring-blue-500" // Blå ring hvis valgt
+                              : "opacity-75 hover:opacity-100" // Mindre opacitet og hover-effekt hvis ikke valgt
                           }
                           transition-all duration-200 ease-in-out
-                          ${isSelected ? "order-first" : ""} `} // Valgte billeder vises først (kan være nyttigt, men ikke altid synligt pga. filtrering).
+                          ${isSelected ? "order-first" : ""} // Valgte billeder vises først
+                        `}
                       >
                         <Image
                           src={
@@ -534,13 +504,13 @@ const KuratorForm = ({
                           sizes="(max-width: 768px) 100px, (max-width: 1200px) 150px, 200px"
                           className="object-cover transition-transform duration-300 group-hover:scale-105 group-hover:brightness-50"
                         />
-                        {/* Vis grøn "✓" hvis billedet er valgt. */}
                         {isSelected && (
+                          // Overlay med tjekmark hvis billedet er valgt
                           <div className="absolute inset-0 bg-black/50 flex items-center justify-center pointer-events-none">
                             <span className="text-white text-3xl">✓</span>
                           </div>
                         )}
-                        {/* Overlay for at vise titel ved hover */}
+                        {/* Overlay for titel ved hover */}
                         <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
                           <p className="text-white text-center text-xs px-2 break-words">
                             {img.titles?.[0]?.title || "Ukendt titel"}
@@ -549,40 +519,38 @@ const KuratorForm = ({
                       </div>
                     );
                   })
-                ) : // Hvis der ikke er billeder at vise, tjek om vi stadig filtrerer/indlæser.
+                ) : // Hvis ingen billeder er fundet, vis en indlæsnings- eller ingen billeder-meddelelse
                 isFiltering || isPending ? (
                   <p className="md:col-span-full text-center">
                     Indlæser billeder...
                   </p>
                 ) : (
-                  // Hvis ingen billeder, og ingen indlæsning, vis besked.
                   <p className="md:col-span-full text-center text-gray-500">
                     Ingen billeder fundet med de valgte filtre.
                   </p>
                 )}
               </div>
               {/* PAGINERINGSKNAPPER */}
-              {totalPages > 1 && ( // Vis pagineringsknapper kun hvis der er mere end 1 side.
+              {totalPages > 1 && ( // Vis pagineringsknapper kun hvis der er mere end én side
                 <div className="flex justify-center items-center space-x-2 mt-4">
                   <CustomButton
-                    onClick={() => paginate(currentPage - 1)} // Gå til forrige side.
-                    disabled={currentPage === 1 || isFiltering || isPending} // Deaktiver hvis første side eller indlæser.
+                    onClick={() => paginate(currentPage - 1)} // Gå til forrige side
+                    disabled={currentPage === 1 || isFiltering || isPending} // Deaktiver knap hvis på første side eller filtrering/afventer
                     variant="outline"
                     type="button"
-                    text={<FaArrowLeft />} // Venstre pil ikon.
+                    text={<FaArrowLeft />} // Venstre pil ikon
                   ></CustomButton>
                   <span className="text-gray-700">
-                    Side {currentPage} af {totalPages}{" "}
-                    {/* Viser aktuel side / total sider. */}
+                    Side {currentPage} af {totalPages}
                   </span>
                   <CustomButton
-                    onClick={() => paginate(currentPage + 1)} // Gå til næste side.
+                    onClick={() => paginate(currentPage + 1)} // Gå til næste side
                     disabled={
                       currentPage === totalPages || isFiltering || isPending
-                    } // Deaktiver hvis sidste side eller indlæser.
+                    } // Deaktiver knap hvis på sidste side eller filtrering/afventer
                     variant="outline"
                     type="button"
-                    text={<FaArrowRight />} // Højre pil ikon.
+                    text={<FaArrowRight />} // Højre pil ikon
                   ></CustomButton>
                 </div>
               )}
@@ -591,15 +559,13 @@ const KuratorForm = ({
         </div>
         {/* Submit Button */}
         <CustomButton
-          type="submit" // Submit-knap for formularen.
-          text="Gem"
-          className="w-fit text-xl mr-2"
+          type="submit" // Type "submit" for at indsende formularen
+          text="Gem event" // Tekst på knappen
+          className="w-fit text-xl" // Styling for knappen
         ></CustomButton>
-        <CustomButton text="Annuller" className="w-fit text-xl bg-black" />{" "}
-        {/* Annuller-knap. */}
       </form>
     </Form>
   );
 };
 
-export default KuratorForm; // Eksporterer komponenten.
+export default KuratorForm; // Eksporter komponenten som standard
