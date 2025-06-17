@@ -91,7 +91,11 @@ const Header = ({ backgroundColor }) => {
 
         <DropdownMenu open={isOpen} onOpenChange={setIsOpen}>
           <DropdownMenuTrigger asChild>
-            <button onClick={toggleMenu} className="focus:outline-none ml-6">
+            <button
+              aria-label="navigation"
+              onClick={toggleMenu}
+              className="focus:outline-none ml-6"
+            >
               {isOpen ? (
                 <IoCloseOutline
                   className="h-6 w-6 text-black"
