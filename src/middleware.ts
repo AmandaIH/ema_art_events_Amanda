@@ -6,6 +6,7 @@ const isPublicRoute = createRouteMatcher([
   "/eventView(.*)",
   "/paymentpage(.*)",
   "/paymentconfirmation(.*)",
+  "/dashbpard(.*)",
   "/sign-in(.*)",
   "/sign-up(.*)",
 ]);
