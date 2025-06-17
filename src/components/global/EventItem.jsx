@@ -13,6 +13,7 @@ const EventItem = async ({
   bookedTickets,
   artworkIds,
   isDashboardPage,
+  isPriority,
 }) => {
   const { image_thumbnail, image_width, image_height, suggested_bg_color } =
     await getArtworkByEventID(artworkIds[0]);
@@ -36,7 +37,7 @@ const EventItem = async ({
             height={500}
             width={500}
             className=" h-full object-cover rounded-lg"
-            priority={true}
+            priority={isPriority}
           />
         </div>
       </figure>

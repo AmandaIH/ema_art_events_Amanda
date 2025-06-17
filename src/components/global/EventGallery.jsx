@@ -14,7 +14,12 @@ const EventGallery = ({ data, isDashboardPage }) => {
         ) : (
           data.map((event, id) => {
             return (
-              <EventItem key={id} {...event} isDashboardPage={isDashboardPage}>
+              <EventItem
+                key={id}
+                isPriority={id === 0}
+                {...event}
+                isDashboardPage={isDashboardPage}
+              >
                 <div className="mt-4 flex gap-2 ">
                   <Link href={`/create_edit?eventId=${event.id}`}>
                     <CustomButton text="Rediger" />
