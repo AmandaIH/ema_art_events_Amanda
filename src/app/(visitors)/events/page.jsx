@@ -1,21 +1,11 @@
-// /app/events/page.jsx
-// Vigtigt: INGEN "use client"; her. Dette er en Server Komponent.
-import {
-  getEvent,
-  getEventDates,
-  getEventLocations,
-  getSMK, // Behold denne, hvis du stadig bruger den på Events-siden for noget andet
-  getArtworkByEventID,
-  getSMKFilterCat, // Behold denne, hvis du stadig bruger den på Events-siden for noget andet
-} from "@/lib/api";
+import { getEvent, getEventDates, getEventLocations } from "@/lib/api";
 
 // Importér den nye centrale klientkomponent til event-filtrering og liste-visning
-import EventFilterAndList from "@/components/global/filter/EventFilterAndList"; // <-- STIEN ER NU TILPASSET DIN STRUKTUR
 import EventGallery from "@/components/global/EventGallery";
 import EventFilterDropdown from "@/components/global/filter/EventFilterDropdown";
 import CustomButton from "@/components/global/CustomButton";
 
-export default async function Events(searchParams) {
+export default async function Events({ searchParams }) {
   const { dato, lokation } = await searchParams;
 
   const eventsData = await getEvent();
@@ -30,7 +20,7 @@ export default async function Events(searchParams) {
           (event) => event.date === dato || event.location.name === lokation
         )
       : eventsData;
-
+  console.log("data: ", data);
   return (
     <main>
       <Filter activeDate={dato} activeLocation={lokation} />
@@ -59,10 +49,7 @@ async function Filter({ activeDate, activeLocation }) {
   ];
 
   return (
-    <form
-      action="/events"
-      className="flex flex-row items-center gap-4 px-2 py-1 mb-8"
-    >
+    <form action="/events" className="flex flex-col md:flex-row  gap-4 mb-8">
       {filterData.map((filter, id) => {
         return <EventFilterDropdown key={id} {...filter} />;
       })}

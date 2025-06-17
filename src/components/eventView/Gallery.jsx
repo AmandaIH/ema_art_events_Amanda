@@ -69,10 +69,9 @@ const Gallery = ({ galleryData }) => {
 
           <div
             ref={scrollContainerRef}
-            className="flex flex-row gap-2 overflow-x-scroll scrollbar-hide snap-x snap-mandatory mx-4"
+            className="flex flex-row gap-2 overflow-x-scroll scrollbar-hide snap-x snap-mandatory mx-4 md:w-[256px] w-[186px]"
             style={{
               scrollSnapType: "x mandatory",
-              width: "256px",
             }}
           >
             {galleryData.map((artwork, index) => {

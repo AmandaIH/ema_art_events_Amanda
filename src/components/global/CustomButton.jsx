@@ -13,7 +13,10 @@ const CustomButton = ({
 }) => {
   if (link) {
     return (
-      <Link href={link}>
+      <Link
+        href={link}
+        className="col-start-1 row-start-2 text-xl h-fit w-fit "
+      >
         <ShadcnButton
           variant={variant}
           size={size}

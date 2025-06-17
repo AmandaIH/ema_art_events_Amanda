@@ -20,7 +20,10 @@ const EventItemText = async ({
   isDashboardPage,
 }) => {
   return (
-    <Card className={`md:col-2 max-w-[30ch]`} style={{ minWidth: "250px" }}>
+    <Card
+      className={`col-1 md:col-2 max-w-[30ch] justify-self-center`}
+      style={{ minWidth: "250px" }}
+    >
       <CardHeader className="p-4 pb-2 relative">
         <CardTitle className="mb-1">{title}</CardTitle>
         <CardDescription className="mb-1">{date}</CardDescription>

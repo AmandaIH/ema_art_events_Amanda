@@ -41,7 +41,7 @@ Totalpris: ${
     <>
       {/* RETTELSE HER: Brug backgroundImage som i EventView */}
       <div
-        className="home-background-wrapper w-full h-screen overflow-hidden absolute inset-0 z-0"
+        className="home-background-wrapper inset-0 z-0"
         style={{
           backgroundImage: dynamicImageUrl ? `url(${dynamicImageUrl})` : "none",
           backgroundColor: dynamicBackgroundColor,
@@ -53,9 +53,9 @@ Totalpris: ${
         }}
       ></div>
 
-      <main className="halfbleed col-[1/3] relative z-2">
+      <main className="halfbleed col-[1/3] overflow-hidden  z-2">
         <section
-          className="col-1 row-1 mt-(--space-4rem) pt-(--space-4rem) pl-(--space-4rem)"
+          className="row-2 md:col-start-1 md:col-end-2 md:row-1 md:mt-(--space-4rem) pt-(--space-4rem) pl-(--space-4rem)"
           style={{ backgroundColor: dynamicBackgroundColor }}
         >
           <h2 className="text-3xl font-bold mb-4 text-white">
@@ -64,7 +64,7 @@ Totalpris: ${
 
           <CustomButton text="Tilbage til forsiden" onClick={handleGoHome} />
         </section>
-        <aside className="col-2 row-1 justify-self-center mt-20">
+        <aside className="row-1 md:col-2 md:row-1 justify-self-center mt-20">
           <OpacityTextBox
             title="Kvittering"
             content={receiptContent}

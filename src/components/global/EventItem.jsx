@@ -18,23 +18,25 @@ const EventItem = async ({
     await getArtworkByEventID(artworkIds[0]);
 
   return (
-    <article className="grid @max-[474px]:grid-cols-1 @max-[474px]:grid-rows-auto @min-[475px]:grid-cols-2 @min-[475px]:grid-rows-1">
-      <figure className="max-w-[210px] h-[325px] md:col-1 grid grid-cols-1 grid-rows-3 ">
+    <article className="grid grid-cols-1 grid-rows-auto md:grid-cols-2 md:grid-rows-1 gap-(--space-2rem)">
+      <figure className="md:col-1 grid grid-cols-6 grid-rows-6  @max-[1020px]:justify-self-end ">
         <div
-          className={`max-w-[180px] h-[250px] rounded-sm row-span-2 row-start-1 col-start-1`}
+          className={`rounded-sm row-start-1 -row-end-2 col-start-1 -col-end-2 w-full justify-self-center `}
           style={{
             backgroundColor: suggested_bg_color?.[0] || "#CCCCCC",
           }}
         ></div>
 
-        <div className=" max-w-[180px] h-[250px] col-1 row-start-2 row-span-2 self-end justify-self-end rounded-lg">
+        <div className=" col-start-2 -col-end-1 row-start-2 -row-end-1 self-end justify-self-end rounded-lg h-[250px] ">
           <Image
             src={image_thumbnail}
             alt={title || "Event billede"}
-            width={image_width}
-            height={image_height}
+            // height={image_height}
+            // width={image_width}
+            height={500}
+            width={500}
             className=" h-full object-cover rounded-lg"
-            priority={false}
+            priority={true}
           />
         </div>
       </figure>
