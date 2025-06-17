@@ -11,7 +11,7 @@ import {
   SignedIn,
   SignedOut,
   SignOutButton,
-  useUser, // Behold useUser, hvis den bruges andre steder, men ikke direkte her i dette snippet
+  // useUser, // Kan fjernes hvis den ikke bruges andre steder i denne fil
 } from "@clerk/nextjs";
 
 import {
@@ -28,9 +28,15 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import StepIndicator from "@/components/paymentpage/StepIndicator"; // Korrigeret sti til global StepIndicator
+import StepIndicator from "@/components/paymentpage/StepIndicator";
 
-// Modtager nu 'pathname' og 'isPaymentOrConfirmationPage' som props
+const navLinks = [
+  { href: "/", label: "Hjem" },
+  { href: "/events", label: "Begivenheder" },
+  { href: "/dashboard", label: "Kurator" },
+  { href: "/create_edit", label: "Lav event" },
+];
+
 const Header = ({ backgroundColor, pathname, isPaymentOrConfirmationPage }) => {
   const [isOpen, setIsOpen] = useState(false);
 
@@ -38,9 +44,8 @@ const Header = ({ backgroundColor, pathname, isPaymentOrConfirmationPage }) => {
     setIsOpen(!isOpen);
   };
 
-  // Bestem currentStep og titel baseret på pathname for betalingsflowet
   let currentStep = 0;
-  let headerTitle = "SMK"; // Standardtitel
+  let headerTitle = "SMK";
 
   if (pathname === "/paymentpage") {
     currentStep = 1;
@@ -53,13 +58,11 @@ const Header = ({ backgroundColor, pathname, isPaymentOrConfirmationPage }) => {
   return (
     <header
       className={`flex items-center justify-between p-4 shadow-md z-4`}
-      style={{ backgroundColor: backgroundColor }} // Beholder den originale baggrundsfarve
+      style={{ backgroundColor: backgroundColor }}
     >
       <div className="container mx-auto px-4 flex flex-col md:flex-row md:items-center md:justify-between w-full">
         {isPaymentOrConfirmationPage ? (
-          // Indhold for betalingssiden
           <div className="w-full text-black">
-            {/* Tekstfarve er sort for at passe med lys baggrund */}
             <h1 className="text-3xl font-bold text-center mb-4">
               {headerTitle}
             </h1>
@@ -70,55 +73,35 @@ const Header = ({ backgroundColor, pathname, isPaymentOrConfirmationPage }) => {
             />
           </div>
         ) : (
-          // Standard header indhold
           <>
             <Link href="/" className="font-bold text-black">
-              {/* Standard tekstfarve for logo */}
               SMK
             </Link>
 
             {/* Desktop Navigation */}
             <NavigationMenu className="hidden lg:flex">
               <NavigationMenuList className="flex space-x-6 items-center">
-                <NavigationMenuItem>
-                  <NavigationMenuLink
-                    href="/"
-                    className="px-3 py-2 text-base font-medium transition-colors hover:text-primary focus:outline-none focus:text-primary text-black"
-                  >
-                    Hjem
-                  </NavigationMenuLink>
-                </NavigationMenuItem>
-                <NavigationMenuItem>
-                  <NavigationMenuLink
-                    href="/events"
-                    className="px-3 py-2 text-base font-medium transition-colors hover:text-primary focus:outline-none focus:text-primary text-black"
-                  >
-                    Begivenheder
-                  </NavigationMenuLink>
-                </NavigationMenuItem>
-                <NavigationMenuItem>
-                  <NavigationMenuLink
-                    href="/dashboard"
-                    className="px-3 py-2 text-base font-medium transition-colors hover:text-primary focus:outline-none focus:text-primary text-black"
-                  >
-                    Kurator
-                  </NavigationMenuLink>
-                </NavigationMenuItem>
-                <NavigationMenuItem>
-                  <NavigationMenuLink
-                    href="/create_edit"
-                    className="px-3 py-2 text-base font-medium transition-colors hover:text-primary focus:outline-none focus:text-primary text-black"
-                  >
-                    Lav event
-                  </NavigationMenuLink>
-                </NavigationMenuItem>
-                {/* Clerk Auth Buttons - Gendannet til original tilstand */}
+                {navLinks.map((link) => (
+                  <NavigationMenuItem key={link.href}>
+                    <NavigationMenuLink
+                      href={link.href}
+                      className="px-3 py-2 text-base font-medium transition-colors hover:text-primary focus:outline-none focus:text-primary text-black"
+                    >
+                      {/* Sikrer at NavigationMenuLink har ét enkelt barn */}
+                      <span>{link.label}</span>
+                    </NavigationMenuLink>
+                  </NavigationMenuItem>
+                ))}
+                {/* Clerk Auth Buttons for Desktop Navigation. */}
                 <NavigationMenuItem>
                   <SignedIn>
                     <UserButton />
                   </SignedIn>
                   <SignedOut>
-                    <SignInButton />
+                    {/* **RETTELSE 1:** Giv SignInButton et eksplicit <span> barn */}
+                    <SignInButton>
+                      <span>Log ind</span>
+                    </SignInButton>
                   </SignedOut>
                 </NavigationMenuItem>
               </NavigationMenuList>
@@ -126,12 +109,15 @@ const Header = ({ backgroundColor, pathname, isPaymentOrConfirmationPage }) => {
 
             {/* Mobil Navigation */}
             <div className="lg:hidden flex items-center">
-              {/* Clerk mobil auth buttons - Gendannet til original tilstand */}
+              {/* Clerk mobil auth buttons */}
               <SignedIn>
                 <UserButton />
               </SignedIn>
               <SignedOut>
-                <SignInButton />
+                {/* **RETTELSE 2:** Giv SignInButton et eksplicit <span> barn */}
+                <SignInButton>
+                  <span>Log ind</span>
+                </SignInButton>
               </SignedOut>
               <DropdownMenu open={isOpen} onOpenChange={setIsOpen}>
                 <DropdownMenuTrigger asChild>
@@ -157,33 +143,39 @@ const Header = ({ backgroundColor, pathname, isPaymentOrConfirmationPage }) => {
                   className="w-1/3 min-w-[200px] shadow-lg mt-2 absolute right-0 text-black"
                   style={{ backgroundColor: backgroundColor }}
                 >
-                  <DropdownMenuItem asChild>
-                    <Link href="/">Hjem</Link>
-                  </DropdownMenuItem>
+                  {navLinks.map((link) => (
+                    // **RETTELSE 3:** DropdownMenuItem med asChild kræver, at dens barn
+                    // (her Link) er et enkelt element OG bærer den nødvendige styling.
+                    <DropdownMenuItem key={link.href} asChild>
+                      <Link
+                        href={link.href}
+                        onClick={() => setIsOpen(false)}
+                        // Disse klasser er kopieret fra DropdownMenuItem's standard styling
+                        // for at sikre, at Link-elementet ser ud som et dropdown-menu-item.
+                        className="flex w-full items-center px-2 py-1.5 text-sm outline-none select-none data-[disabled]:pointer-events-none data-[disabled]:opacity-50"
+                      >
+                        {link.label}
+                      </Link>
+                    </DropdownMenuItem>
+                  ))}
                   <DropdownMenuSeparator />
-                  <DropdownMenuItem asChild>
-                    <Link href="/events">Begivenheder</Link>
-                  </DropdownMenuItem>
-                  <DropdownMenuItem asChild>
-                    <Link href="/dashboard">Kurator</Link>
-                  </DropdownMenuItem>
-                  <DropdownMenuSeparator />
-                  <DropdownMenuItem asChild>
-                    <Link href="/create_edit">Lav event</Link>
-                  </DropdownMenuItem>
-                  <DropdownMenuSeparator />
-                  <DropdownMenuItem asChild>
-                    <SignedOut>
+                  {/* Clerk Auth Buttons inde i dropdown */}
+                  {/* Begge knapper skal have eksplicitte <span> børn og være i separate DropdownMenuItem'er, 
+                      da SignedOut/SignedIn også kun må returnere et enkelt element. */}
+                  <SignedOut>
+                    <DropdownMenuItem asChild>
                       <SignInButton>
                         <span className="cursor-pointer">Log ind</span>
                       </SignInButton>
-                    </SignedOut>
-                    <SignedIn>
+                    </DropdownMenuItem>
+                  </SignedOut>
+                  <SignedIn>
+                    <DropdownMenuItem asChild>
                       <SignOutButton>
                         <span className="cursor-pointer">Log ud</span>
                       </SignOutButton>
-                    </SignedIn>
-                  </DropdownMenuItem>
+                    </DropdownMenuItem>
+                  </SignedIn>
                 </DropdownMenuContent>
               </DropdownMenu>
             </div>
