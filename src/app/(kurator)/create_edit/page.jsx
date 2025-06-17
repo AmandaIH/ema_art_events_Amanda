@@ -1,4 +1,3 @@
-// src/app/create_edit/page.jsx
 import KuratorForm from "@/components/kurator_create_edit/KuratorForm";
 import {
   getEvent,
@@ -6,7 +5,7 @@ import {
   getEventLocations,
   getSMKImg,
   getSMKFilterCat,
-  getArtworkByEventID, // <-- TILFØJET: Importér denne funktion
+  getArtworkByEventID,
 } from "@/lib/api";
 
 export default async function CreateEditEventPage({ searchParams }) {
@@ -17,7 +16,7 @@ export default async function CreateEditEventPage({ searchParams }) {
   const locations = await getEventLocations(); // Henter lokationer
   const { eventId } = await searchParams; // Fanger eventId fra URL'en for redigering
   let prevData = null;
-  let prevSelectedArtworkDetails = []; // <-- NY: Initialiser dette array
+  let prevSelectedArtworkDetails = [];
 
   if (eventId) {
     prevData = await getEventId(eventId); // Henter eksisterende eventdata

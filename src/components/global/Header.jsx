@@ -33,7 +33,6 @@ import StepIndicator from "@/components/paymentpage/StepIndicator"; // Korrigere
 // Modtager nu 'pathname' og 'isPaymentOrConfirmationPage' som props
 const Header = ({ backgroundColor, pathname, isPaymentOrConfirmationPage }) => {
   const [isOpen, setIsOpen] = useState(false);
-  // const { user } = useUser(); // Fjernet, hvis ikke brugt direkte i dette snippet for at reducere kompleksitet
 
   const toggleMenu = () => {
     setIsOpen(!isOpen);
@@ -60,7 +59,6 @@ const Header = ({ backgroundColor, pathname, isPaymentOrConfirmationPage }) => {
         {isPaymentOrConfirmationPage ? (
           // Indhold for betalingssiden
           <div className="w-full text-black">
-            {" "}
             {/* Tekstfarve er sort for at passe med lys baggrund */}
             <h1 className="text-3xl font-bold text-center mb-4">
               {headerTitle}
@@ -75,7 +73,6 @@ const Header = ({ backgroundColor, pathname, isPaymentOrConfirmationPage }) => {
           // Standard header indhold
           <>
             <Link href="/" className="font-bold text-black">
-              {" "}
               {/* Standard tekstfarve for logo */}
               SMK
             </Link>
