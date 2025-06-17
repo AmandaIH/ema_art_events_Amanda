@@ -2,6 +2,7 @@ import { getEvent, getEventDates, getEventLocations } from "@/lib/api";
 import EventGallery from "@/components/global/EventGallery";
 import EventFilterDropdown from "@/components/global/filter/EventFilterDropdown";
 import CustomButton from "@/components/global/CustomButton";
+import { Suspense } from "react";
 
 export default async function Dashboard({ searchParams }) {
   const { dato, lokation } = await searchParams;
@@ -20,7 +21,9 @@ export default async function Dashboard({ searchParams }) {
   return (
     <main>
       <Filter activeDate={dato} activeLocation={lokation} />
-      <EventGallery data={data} isDashboardPage={true} />
+      <Suspense fallback="Loading ...">
+        <EventGallery data={data} isDashboardPage={true} />
+      </Suspense>
     </main>
   );
 }
