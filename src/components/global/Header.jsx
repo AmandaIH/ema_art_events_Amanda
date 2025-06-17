@@ -53,7 +53,11 @@ const Header = ({ backgroundColor }) => {
           </NavigationMenuItem>
 
           <SignedOut>
-            <SignInButton>Admin</SignInButton>
+            <NavigationMenuItem className="group">
+              <NavigationMenuLink asChild>
+                <SignInButton>Admin</SignInButton>
+              </NavigationMenuLink>
+            </NavigationMenuItem>
           </SignedOut>
 
           <SignedIn>
@@ -73,7 +77,9 @@ const Header = ({ backgroundColor }) => {
                 Lav event
               </NavigationMenuLink>
             </NavigationMenuItem>
-            <UserButton />
+            <NavigationMenuItem>
+              <UserButton />
+            </NavigationMenuItem>
           </SignedIn>
         </NavigationMenuList>
       </NavigationMenu>
