@@ -49,10 +49,7 @@ async function Filter({ activeDate, activeLocation }) {
   ];
 
   return (
-    <form
-      action="/events"
-      className="flex flex-row items-center gap-4 px-2 py-1 mb-8"
-    >
+    <form action="/events" className="flex flex-col md:flex-row  gap-4 mb-8">
       {filterData.map((filter, id) => {
         return <EventFilterDropdown key={id} {...filter} />;
       })}

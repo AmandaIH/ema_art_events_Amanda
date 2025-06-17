@@ -19,7 +19,7 @@ export default function EventFilterDropdown({
 }) {
   return (
     <Select name={name} defaultValue={active && active}>
-      <SelectTrigger className="w-[180px]">
+      <SelectTrigger className="w-full md:w-[180px] self-center">
         <SelectValue placeholder={`Vælg ${singular.toLowerCase()}`} />
       </SelectTrigger>
       <SelectContent>

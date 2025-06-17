@@ -74,7 +74,7 @@ export default async function EventView({ params, searchParams }) {
 
   return (
     <div
-      className="event-view-background w-full h-screen overflow-hidden"
+      className=" home-background-wrapper overflow-hidden grid grid-cols-subgrid"
       style={{
         backgroundImage: currentArtworkForBackground?.imageUrl
           ? `url(${currentArtworkForBackground.imageUrl})`
@@ -89,12 +89,12 @@ export default async function EventView({ params, searchParams }) {
           "background-image 0.5s ease-in-out, background-color 0.5s ease-in-out",
       }}
     >
-      <main className="z-20 w-full h-full p-6 grid grid-cols-1 grid-rows-[1fr_1fr_auto] gap-4 md:grid-cols-2">
+      <main className="z-20 p-2 h-full grid grid-cols-1 grid-rows-[1fr_1fr_auto] gap-4 md:grid-cols-2 md:col-start-2 md:-col-end-2 md:row-start-1 md:-row-end-1">
         <section className="col-start-1 row-start-2 h-full flex flex-col justify-end items-start">
           <OpacityTextBox
             title={opacityBoxTitle}
             content={opacityBoxContent}
-            className="p-4 max-w-md mb-4"
+            className="p-4 max-w-md mb-4 "
             maxContentHeightClasses="overflow-y-auto"
           />
 
@@ -107,7 +107,7 @@ export default async function EventView({ params, searchParams }) {
           />
         </section>
 
-        <section className="col-start-1 md:col-start-2 row-start-3 justify-self-center md:justify-self-end self-end mb-4 mr-4">
+        <section className="col-start-1 -col-end-1 md:col-start-2 row-start-3 justify-self-center md:justify-self-end self-end mb-4 mr-4">
           <Gallery galleryData={allArtworkDetails} />
         </section>
       </main>
