@@ -183,7 +183,9 @@ const KuratorForm = ({
         setSuccessMessage(
           `Eventet er ${prevData ? "opdateret" : "oprettet"} succesfuldt!`
         );
-
+        setTimeout(() => {
+          router.push("/dashboard");
+        }, 3000); // Forsink redirection i 3 sekunder (3000 ms)
         // NYT: Scroll til toppen og forsink redirection ved succes
         if (formRef.current) {
           formRef.current.scrollIntoView({
@@ -191,9 +193,6 @@ const KuratorForm = ({
             block: "start",
           });
         }
-        setTimeout(() => {
-          router.push("/dashboard");
-        }, 3000); // Forsink redirection i 3 sekunder (3000 ms)
       } else {
         const errorData = await response.json();
         console.error("Fejl ved event handling via API-rute:", errorData);
@@ -217,11 +216,11 @@ const KuratorForm = ({
         }
       }
     } catch (error) {
-      console.error("Netværksfejl ved submit af event til API-rute:", error);
+      // console.error("Netværksfejl ved submit af event til API-rute:", error);
       // Brug setErrorMessage til at vise netværksfejlen på skærmen
-      setErrorMessage(
-        "Netværksfejl: Kunne ikke oprette/opdatere event. Tjek din internetforbindelse." // Kortere tekst
-      );
+      // setErrorMessage(
+      //   "Netværksfejl: Kunne ikke oprette/opdatere event. Tjek din internetforbindelse." // Kortere tekst
+      // );
       // Scroll til toppen af formularen ved fejl
       if (formRef.current) {
         formRef.current.scrollIntoView({ behavior: "smooth", block: "start" });

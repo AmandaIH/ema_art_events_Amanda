@@ -1,16 +1,6 @@
-// /app/events/page.jsx
-// Vigtigt: INGEN "use client"; her. Dette er en Server Komponent.
-import {
-  getEvent,
-  getEventDates,
-  getEventLocations,
-  getSMK, // Behold denne, hvis du stadig bruger den på Events-siden for noget andet
-  getArtworkByEventID,
-  getSMKFilterCat, // Behold denne, hvis du stadig bruger den på Events-siden for noget andet
-} from "@/lib/api";
+import { getEvent, getEventDates, getEventLocations } from "@/lib/api";
 
 // Importér den nye centrale klientkomponent til event-filtrering og liste-visning
-import EventFilterAndList from "@/components/global/filter/EventFilterAndList"; // <-- STIEN ER NU TILPASSET DIN STRUKTUR
 import EventGallery from "@/components/global/EventGallery";
 import EventFilterDropdown from "@/components/global/filter/EventFilterDropdown";
 import CustomButton from "@/components/global/CustomButton";

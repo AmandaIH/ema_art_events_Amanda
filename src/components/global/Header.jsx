@@ -115,7 +115,7 @@ const Header = ({ backgroundColor }) => {
 
             <SignedIn>
               <DropdownMenuItem asChild>
-                <Link href="/dashboard">Kurator</Link>
+                <Link href="/dashboard">Dashboard</Link>
               </DropdownMenuItem>
               <DropdownMenuSeparator />
               <DropdownMenuItem asChild>
