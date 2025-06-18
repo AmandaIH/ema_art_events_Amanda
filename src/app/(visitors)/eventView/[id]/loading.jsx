@@ -1,8 +1,6 @@
 export default function Loading() {
   return (
-    // Den ydre container for loading-indikatoren
     // role="status": Fortæller skærmlæseren, at dette element indeholder en statusmeddelelse,
-    // der ikke er interaktiv, men vigtig for brugeren at kende.
     // aria-live="polite": Fortæller skærmlæseren, at ændringer i dette områdes indhold
     // skal annonceres til brugeren på en "høflig" måde, dvs. uden at afbryde igangværende oplæsning,
     // men så snart skærmlæseren er klar. Dette er ideelt for ikke-kritiske opdateringer som loading-indikatorer.

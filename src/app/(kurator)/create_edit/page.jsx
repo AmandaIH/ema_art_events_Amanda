@@ -1,28 +1,15 @@
-// Denne fil definerer siden for at oprette eller redigere en begivenhed.
-// Den er en "Server Komponent" (Standard i Next.js App Router, ingen "use client" direkive).
-// Det betyder, at al JavaScript-koden her (især datahentning med 'await')
-// kører på serveren, før siden sendes som statisk HTML til browseren.
-// Dette giver fordele som hurtigere indlæsning, bedre SEO og sikkerhed.
+import KuratorForm from "@/components/kurator_create_edit/KuratorForm";
 
-import KuratorForm from "@/components/kurator_create_edit/KuratorForm"; // Importerer formularkomponenten til at oprette/redigere events.
-// Importerer forskellige funktioner fra din API-biblioteksfil ('@/lib/api').
-// Disse funktioner er designet til at hente data fra din backend eller en ekstern API.
 import {
-  getEvent, // Henter en liste over alle events.
-  getEventId, // Henter detaljer for et specifikt event baseret på ID.
-  getEventLocations, // Henter en liste over alle event-lokationer.
-  getSMKImg, // Henter billeder fra SMK (Statens Museum for Kunst) API.
-  getSMKFilterCat, // Henter filterkategorier for SMK billeder (f.eks. typer af kunstværker).
-  getArtworkByEventID, // Henter detaljer for et specifikt kunstværk.
+  getEvent,
+  getEventId,
+  getEventLocations,
+  getSMKImg,
+  getSMKFilterCat,
+  getArtworkByEventID,
 } from "@/lib/api";
 
-// Hovedkomponenten for siden til at oprette/redigere et event.
-// Fordi dette er en Server Komponent, er den defineret som en 'async' funktion.
-// Den modtager 'searchParams' som en prop, som giver adgang til URL-query-parametre.
-// F.eks. hvis URL'en er '/create-edit-event?eventId=123', vil searchParams.eventId være '123'.
 export default async function CreateEditEventPage({ searchParams }) {
-  // 1. Datahentning: Henter nødvendige data fra API'er på serveren.
-
   // Henter alle billeder fra SMK API. Dette er data, der potentielt kan bruges i formularen
   // til at vælge billeder til et event.
   const initialImagesData = await getSMKImg();
@@ -34,11 +21,6 @@ export default async function CreateEditEventPage({ searchParams }) {
   // Henter alle tilgængelige lokationer for events. Dette bruges sandsynligvis til en dropdown i formularen.
   const locations = await getEventLocations();
 
-  // 2. Bestemmer om siden er i "opret" eller "rediger" tilstand.
-
-  // Destrukturerer 'eventId' fra URL'ens query-parametre.
-  // Hvis URL'en er '/create-edit-event?eventId=XYZ', vil 'eventId' indeholde 'XYZ'.
-  // Hvis 'eventId' ikke er til stede, er dette en "opret" operation.
   const { eventId } = searchParams; // searchParams er allerede et objekt, behøver ikke 'await'.
   let prevData = null; // Variabel til at holde eksisterende eventdata, hvis vi er i redigeringstilstand.
   let prevSelectedArtworkDetails = []; // Variabel til at holde detaljer om kunstværker, der allerede er knyttet til eventet.
